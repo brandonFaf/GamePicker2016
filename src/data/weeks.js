@@ -1,0 +1,18 @@
+export default weeks = [
+  {week:1,date:'Sept 8'},
+  {week:2,date:'Sept 15'},
+  {week:3,date:'Sept 22'},
+  {week:4,date:'Sept 29'},
+  {week:5,date:'Oct 6'},
+  {week:6,date:'Oct 13'},
+  {week:7,date:'Oct 20'},
+  {week:8,date:'Oct 27'},
+  {week:9,date:'Nov 3'},
+  {week:10,date:'Nov 10'},
+  {week:11,date:'Nov 17'},
+  {week:12,date:'Nov 24'},
+  {week:13,date:'Dec 1'},
+  {week:14,date:'Dec 8'},
+  {week:15,date:'Dec 15'},
+  {week:16,date:'Dec 22'},
+  {week:17,date:'Jan 29'}, ]
