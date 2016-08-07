@@ -5,10 +5,11 @@ import {
   Text,
   StyleSheet
 } from 'react-native';
+import {Actions} from 'react-native-router-flux';
 export default Week = ({week}) => {
   return(
     <TouchableHighlight
-        onPress={()=> console.log("week Pushed")}
+        onPress={()=>Actions.games({week:week.week})}
         underlayColor = '#ddd'>
         <View style ={styles.row}>
           <Text style={{fontSize:18}}>Week {week.week}</Text>
