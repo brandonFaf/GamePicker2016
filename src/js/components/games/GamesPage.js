@@ -1,15 +1,14 @@
 import React from 'react';
 import{
   View,
-  Text,
   StyleSheet,
   ListView
 } from 'react-native';
 import {connect} from 'react-redux';
 import GamesList from './GamesList';
 class GamesPage extends React.Component{
-  constructor(){
-    super()
+  constructor(props){
+    super(props);
     this.dataSource = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 != r2,
       sectionHeaderHasChanged: (s1, s2) => s1 != s2

@@ -10,12 +10,12 @@ import {Actions} from 'react-native-router-flux';
 export default GameItem = ({game}) => {
   return (
     <TouchableHighlight
-      onPress={()=> console.log("pushed button")}
+      onPress={()=> Actions.select({id:game.id})}
       underlayColor = '#ddd'>
       <View style ={styles.row}>
         <Text style={{fontSize:18}}>{game.awayTeam} @ {game.homeTeam} </Text>
         <View style={{flex:1, flexDirection:'row'}}>
-          <Text style={styles.dateText}></Text>
+          <Text style={styles.dateText}>{game.pick}</Text>
         </View>
       </View>
     </TouchableHighlight>

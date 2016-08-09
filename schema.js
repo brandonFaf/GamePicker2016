@@ -1,0 +1,31 @@
+{
+  games:
+    [
+      gameId:
+      awayTeam:
+      homeTeam:
+      winner:
+      pickAwayTeam:
+      [
+        userId:
+      ]
+      pickHomeTeam:
+      [
+        userId:
+      ]
+    ]
+  users:
+  [
+    userID:
+    score:
+  ]
+  picks:
+    [
+      userId:
+      [
+        gameId:
+        pick:
+      ]
+    ]
+
+}

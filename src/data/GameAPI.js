@@ -6,6 +6,16 @@ export default class GameAPI{
       }, 1000)
     });
   }
+  static savePick(game, teamName){
+    game = Object.assign({}, game);
+    return new Promise( (resolve,reject) => {
+      setTimeout( () => {
+        const gameIndex = games.findIndex(g => g.id == game.id);
+        games.splice(gameIndex, 1, game);
+        resolve(game);
+      }, 1000)
+    })
+  }
 }
 
 const games = [

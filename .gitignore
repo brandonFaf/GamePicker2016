@@ -22,6 +22,7 @@ DerivedData
 *.xcuserstate
 project.xcworkspace
 
+
 # Android/IJ
 #
 *.iml
@@ -39,3 +40,7 @@ buck-out/
 \.buckd/
 android/app/libs
 android/keystores/debug.keystore
+
+# Custom
+src/js/components/games/images/
+ios/GamePicker2016/Images.xcassets/
