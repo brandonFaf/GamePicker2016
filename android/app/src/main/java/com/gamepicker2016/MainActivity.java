@@ -1,6 +1,7 @@
 package com.gamepicker2016;
 
 import com.facebook.react.ReactActivity;
+import com.xxsnakerxx.socialauth.SocialAuthPackage;
 
 public class MainActivity extends ReactActivity {
 
