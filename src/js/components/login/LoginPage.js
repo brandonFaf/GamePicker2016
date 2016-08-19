@@ -1,21 +1,21 @@
 import React from 'react';
-import{View, Text, TextInput, StyleSheet, TouchableHighlight,} from 'react-native';
+import{View, Text, TextInput, StyleSheet, TouchableHighlight,AsyncStorage} from 'react-native';
 import {Actions} from 'react-native-router-flux'
 import SocialAuth from 'react-native-social-auth';
 import firebase from 'firebase';
+import {bindActionCreators} from 'redux';
+import {connect}  from 'react-redux';
+import * as loginActions  from '../../actions/loginActions';
+import UserNameInput from './UserNameInput';
+import LoginButtons from './LoginButtons';
 
-import firebaseConfig from '../../../data/firebaseConfig';
-import UserNameInput from './UserNameInput'
-import LoginButtons from './LoginButtons'
-
-export default class LoginPage extends React.Component{
-
+class LoginPage extends React.Component{
   constructor(props){
     super(props);
-    firebase.initializeApp(firebaseConfig);
-    this.state = {loginStage: true};
+    this.state = {loginStage:true}
     this.loginTwitter = this.loginTwitter.bind(this);
     this.loginFacebook = this.loginFacebook.bind(this);
+    this.saveUser = this.saveUser.bind(this);
   }
 
   loginTwitter(){
@@ -25,11 +25,12 @@ export default class LoginPage extends React.Component{
       return SocialAuth.getTwitterCredentials(accounts[0].userName)
     })
     .then((credentials) => {
-      console.log(credentials)
+      credentials.provider = 'twitter';
+      this.setState({credentials});
       const credential = firebase.auth.TwitterAuthProvider.credential(credentials.oauthToken, credentials.oauthTokenSecret);
-      return firebase.auth().signInWithCredential(credential)
-    }).then((user) => {
-      console.log(user);
+      return this.props.actions.loginUser(credential);
+    })
+    .then(() => {
       this.setState({loginStage:false})
     })
     .catch((error)=> {
@@ -41,16 +42,26 @@ export default class LoginPage extends React.Component{
     SocialAuth.setFacebookApp({id:'1261655493853815', name:'KTB Game Picker 2016'});
     SocialAuth.getFacebookCredentials(['email','public_profile'], SocialAuth.facebookPermissionsType.read)
     .then( (credentials) => {
+      credentials.provider = "facebook";
+      this.setState({credentials});
       const credential = firebase.auth.FacebookAuthProvider.credential(credentials.accessToken);
-      return firebase.auth().signInWithCredential(credential);
+      return this.props.actions.loginUser(credential);
     })
-    .then((user) => {
-      console.log(user);
+    .then(() => {
       this.setState({loginStage:false})
     })
     .catch((error) => {
       console.log(error);
     })
+  }
+
+  saveUser(userName){
+    let {credentials} = this.state;
+    credentials.userName = userName;
+    this.props.actions.setUserName(userName);
+    AsyncStorage.setItem('credentials', JSON.stringify(credentials)).then(()=>{Actions.home()}).catch( (er) => {
+      console.error(er);
+    });
   }
   render(){
     return(
@@ -59,15 +70,28 @@ export default class LoginPage extends React.Component{
           <Text style = {styles.heading}>KTB Pickeroo</Text>
         </View>
         <View>
+          {this.props.loading && <Text>LOADING</Text>}
           {this.state.loginStage ?
                 <LoginButtons loginFacebook={this.loginFacebook} loginTwitter={this.loginTwitter}/>
-              : <UserNameInput next={Actions.home}/>}
+              : <UserNameInput next={this.saveUser}/>}
         </View>
       </View>
 
     )
   }
 }
+function mapStateToProps(state) {
+  return{
+    user: state.user,
+    loading: state.loading
+  };
+}
+function mapActionsToProps(dispatch) {
+  return{
+    actions: bindActionCreators(loginActions, dispatch)
+  };
+}
+export default connect(mapStateToProps, mapActionsToProps)(LoginPage);
 
 const styles = StyleSheet.create({
   container: {

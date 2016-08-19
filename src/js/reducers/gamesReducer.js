@@ -1,4 +1,4 @@
-import * as actions from '../actions/actionTypes.js';
+import * as types from '../actions/actionTypes.js';
 
 function sortById(games) {
   return games.sort( (a,b) => {
@@ -8,9 +8,9 @@ function sortById(games) {
 
 export default function gamesReducer(state = [], action) {
   switch (action.type) {
-    case actions.LOAD_GAMES_SUCCESS:
+    case types.LOAD_GAMES_SUCCESS:
       return sortById(action.games);
-    case actions.SAVE_PICK:
+    case types.SAVE_PICK:
       return sortById([...state.filter( (game) => {
         return game.id !== action.game.id;
       }), Object.assign({}, action.game)])

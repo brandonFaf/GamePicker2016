@@ -12,7 +12,7 @@ export default class UserNameInput extends React.Component {
     if (!this.username) {
       return this.setState({missingName:true});
     }
-    this.props.next()
+    this.props.next(this.username)
   }
   render(){
     return(

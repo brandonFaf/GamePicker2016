@@ -1,16 +1,16 @@
-import * as actions from './actionTypes';
+import * as types from './actionTypes';
 import GameAPI from '../../data/GameAPI';
 
 function loadGamesSuccess(games) {
   //TODO: return only the current week and week before and after
   console.log("here");
-  return {type:actions.LOAD_GAMES_SUCCESS, games}
+  return {type:types.LOAD_GAMES_SUCCESS, games}
 }
 
 function savePickSuccess(game) {
   //TODO: return only the current week and week before and after
   console.log("here");
-  return {type:actions.SAVE_PICK, game}
+  return {type:types.SAVE_PICK, game}
 }
 
 export function savePick(game) {
