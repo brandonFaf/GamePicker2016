@@ -1,5 +1,5 @@
 import React from 'react';
-import{View, Text, TextInput, StyleSheet, TouchableHighlight,AsyncStorage} from 'react-native';
+import{View,Text, TextInput, StyleSheet, TouchableHighlight,AsyncStorage} from 'react-native';
 import {Actions} from 'react-native-router-flux'
 import SocialAuth from 'react-native-social-auth';
 import firebase from 'firebase';
@@ -8,7 +8,7 @@ import {connect}  from 'react-redux';
 import * as loginActions  from '../../actions/loginActions';
 import UserNameInput from './UserNameInput';
 import LoginButtons from './LoginButtons';
-
+import LoadingOverlay from '../common/loading';
 class LoginPage extends React.Component{
   constructor(props){
     super(props);
@@ -70,11 +70,11 @@ class LoginPage extends React.Component{
           <Text style = {styles.heading}>KTB Pickeroo</Text>
         </View>
         <View>
-          {this.props.loading && <Text>LOADING</Text>}
           {this.state.loginStage ?
                 <LoginButtons loginFacebook={this.loginFacebook} loginTwitter={this.loginTwitter}/>
               : <UserNameInput next={this.saveUser}/>}
         </View>
+        {this.props.loading && <LoadingOverlay/> }
       </View>
 
     )

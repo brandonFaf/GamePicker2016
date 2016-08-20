@@ -1,6 +1,6 @@
 import {AsyncStorage} from 'react-native';
 import * as types from './actionTypes';
-import {Actions} from 'react-native-router-flux';
+import {Actions, ActionConst} from 'react-native-router-flux';
 function userLoggedInSuccess(displayName) {
   return {type: types.Log_IN_SUCCESS, displayName}
 }
@@ -36,7 +36,7 @@ export function checkUserStatus() {
         }
         loginUser(credential)(dispatch)
         dispatch(setUserName(savedCredentials.userName));
-        Actions.home();
+        Actions.home({type:ActionConst.REPLACE});
       }
       else{
         dispatch(noUser());
