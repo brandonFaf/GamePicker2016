@@ -13,6 +13,7 @@ import {loadGames} from './src/js/actions/gameActions';
 import {checkUserStatus} from './src/js/actions/loginActions'
 import firebase from 'firebase';
 import firebaseConfig from './src/data/firebaseConfig'
+
 const store = configureStore({loading:true});
 firebase.initializeApp(firebaseConfig);
 class GamePicker2016 extends Component {

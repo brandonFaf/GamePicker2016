@@ -1,5 +1,6 @@
 import * as types from './actionTypes';
 import GameAPI from '../../data/GameAPI';
+import firebase from 'firebase';
 
 function loadGamesSuccess(games) {
   //TODO: return only the current week and week before and after
@@ -25,8 +26,8 @@ export function savePick(game) {
 
 export function loadGames(){
   return function (dispatch) {
-    return GameAPI.loadGames().then((games) => {
-      dispatch(loadGamesSuccess(games))
+    return firebase.database().ref('games').once('value').then((games) => {
+      dispatch(loadGamesSuccess(games.val()))
     }).catch( (err) => {
       throw(err);
     })

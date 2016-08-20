@@ -45,3 +45,4 @@ android/keystores/debug.keystore
 src/js/components/games/images/
 ios/GamePicker2016/Images.xcassets/
 src/data/firebaseConfig.js
+Schedule.json
