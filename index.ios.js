@@ -20,7 +20,7 @@ class GamePicker2016 extends Component {
   constructor(){
     super();
     store.dispatch(checkUserStatus())
-    // store.dispatch(loadGames());
+    store.dispatch(loadGames());
   }
   render() {
     return (

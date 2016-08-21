@@ -37,6 +37,7 @@ export function loginUser(credential,userName, id) {
 
 export function checkUserStatus() {
   return function (dispatch) {
+    // AsyncStorage.clear();
     AsyncStorage.getItem('credentials').then( (savedCredentials) => {
       if (savedCredentials) {
         savedCredentials = JSON.parse(savedCredentials);

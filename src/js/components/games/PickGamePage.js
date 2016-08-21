@@ -7,7 +7,7 @@ import{
 import {connect} from 'react-redux';
 import Team from './Team';
 import {bindActionCreators} from 'redux';
-import * as selectActions from '../../actions/selectActions';
+import * as selectActions from '../../actions/gameActions';
 class PickGamePage extends React.Component{
   constructor(props){
     super(props);
@@ -20,14 +20,14 @@ class PickGamePage extends React.Component{
     if (!game[array]) {
       game[array] = [];
     }
-    game[array].push(this.props.userId);
+    game[array].push(this.props.user.userName);
 
   }
   removePick(game,array){
     if (!game[array]) {
       return game[array] =[];
     }
-    const userIndex = game[array].indexOf(this.props.userId);
+    const userIndex = game[array].indexOf(this.props.user.userName);
     if (userIndex >= 0) {
       game[array].splice(userIndex,1);
     }
@@ -40,11 +40,11 @@ class PickGamePage extends React.Component{
       this.removePick(this.state.game,'pickedHomeTeam');
     }
     else{
-      this.addPick(this.state.game, 'pickedAwayTeam')
-      this.removePick(this.state.game,'pickedHomeTeam');
+      this.addPick(this.state.game, 'pickedHomeTeam')
+      this.removePick(this.state.game,'pickedAwayTeam');
     }
     this.state.game.pick = teamName;
-    this.props.actions.savePick(this.state.game);
+    this.props.actions.savePick(this.state.game, this.props.user.id, teamName );
   }
 
   render(){
@@ -72,7 +72,7 @@ function mapStateToProps(state, ownProps) {
   const game = getGameById(state.games, ownProps.id);
   return {
     game,
-    userId: state.userId
+    user: state.user
   };
 }
 function mapActionsToProps(dispatch){
