@@ -1,19 +1,33 @@
 import {AsyncStorage} from 'react-native';
 import * as types from './actionTypes';
 import {Actions, ActionConst} from 'react-native-router-flux';
-function userLoggedInSuccess(displayName) {
-  return {type: types.Log_IN_SUCCESS, displayName}
+function userLoggedInSuccess(userName, id) {
+  return {type: types.Log_IN_SUCCESS, userName, id}
 }
 function noUser() {
   return {type: types.NO_USER}
 }
-export function setUserName(userName) {
-  return {type: types.SET_USERNAME, userName};
+
+function userSaved(id) {
+  return {type: types.USER_SAVED, id}
 }
-export function loginUser(credential) {
+
+export function saveUser(userName){
   return function (dispatch) {
-    firebase.auth().signInWithCredential(credential).then( (user) => {
-      dispatch(userLoggedInSuccess(user.displayName));
+    const uid = firebase.database().ref('users').push().key;
+    let updates = {};
+    updates['users/' + uid] = {userName};
+    return firebase.database().ref().update(updates).then(() => {
+      dispatch(userSaved(uid))
+      return uid
+    });
+  }
+}
+
+export function loginUser(credential,userName, id) {
+  return function (dispatch) {
+    return firebase.auth().signInWithCredential(credential).then( (user) => {
+      dispatch(userLoggedInSuccess(userName, id));
     })
     .catch( (err) => {
       //TODO add alert saying login failed and go back to login screen.
@@ -23,7 +37,6 @@ export function loginUser(credential) {
 
 export function checkUserStatus() {
   return function (dispatch) {
-    //AsyncStorage.clear();
     AsyncStorage.getItem('credentials').then( (savedCredentials) => {
       if (savedCredentials) {
         savedCredentials = JSON.parse(savedCredentials);
@@ -34,9 +47,10 @@ export function checkUserStatus() {
         if (savedCredentials.provider == 'facebook') {
           credential = firebase.auth.FacebookAuthProvider.credential(savedCredentials.accessToken);
         }
-        loginUser(credential)(dispatch)
-        dispatch(setUserName(savedCredentials.userName));
-        Actions.home({type:ActionConst.REPLACE});
+        loginUser(credential, savedCredentials.userName, savedCredentials.id )(dispatch).then(() => {
+          dispatch({type:types.HIDE_LOADING});
+          Actions.home({type:ActionConst.REPLACE});
+        })
       }
       else{
         dispatch(noUser());

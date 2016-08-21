@@ -1,18 +1,18 @@
 import React from 'react';
 import {View, TouchableHighlight, Text, StyleSheet} from 'react-native'
 
-export default LoginButtons = ({loginTwitter, loginFacebook}) => {
+export default LoginButtons = ({chooseProvider}) => {
   return (
     <View>
       <TouchableHighlight
         style= {[styles.button, styles.Twitter ]}
-        onPress = {loginTwitter}
+        onPress = {()=>chooseProvider('twitter')}
       >
         <Text style = {styles.buttonText}> Login with Twiter </Text>
       </TouchableHighlight>
       <TouchableHighlight
         style= {[styles.button, styles.Facebook ]}
-        onPress = {loginFacebook}
+        onPress = {()=>chooseProvider('facebook')}
       >
         <Text style = {styles.buttonText}> Login with Facebook </Text>
       </TouchableHighlight>

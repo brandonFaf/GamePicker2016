@@ -6,6 +6,7 @@ import firebase from 'firebase';
 import {bindActionCreators} from 'redux';
 import {connect}  from 'react-redux';
 import * as loginActions  from '../../actions/loginActions';
+import * as loadingActions from '../../actions/loadingActions';
 import UserNameInput from './UserNameInput';
 import LoginButtons from './LoginButtons';
 import LoadingOverlay from '../common/loading';
@@ -13,55 +14,74 @@ class LoginPage extends React.Component{
   constructor(props){
     super(props);
     this.state = {loginStage:true}
+    this.chooseProvider = this.chooseProvider.bind(this);
     this.loginTwitter = this.loginTwitter.bind(this);
     this.loginFacebook = this.loginFacebook.bind(this);
     this.saveUser = this.saveUser.bind(this);
   }
 
-  loginTwitter(){
+  chooseProvider(provider){
+    this.setState({provider});
+    this.setState({loginStage:false})
+
+  }
+
+  alertError(err){
+    console.log(err);
+  }
+
+  loginTwitter(userName){
     SocialAuth.getTwitterSystemAccounts()
     .then((accounts) => {
       console.log(accounts)
       return SocialAuth.getTwitterCredentials(accounts[0].userName)
     })
     .then((credentials) => {
-      credentials.provider = 'twitter';
+      credentials.userName = userName;
       this.setState({credentials});
       const credential = firebase.auth.TwitterAuthProvider.credential(credentials.oauthToken, credentials.oauthTokenSecret);
-      return this.props.actions.loginUser(credential);
+      this.loginCreateSaveUser(credential,userName)//this.props.actions.loginUser(credential, username);
     })
-    .then(() => {
-      this.setState({loginStage:false})
-    })
-    .catch((error)=> {
-      console.log(error)
-    })
+    .catch(this.alertError)
   }
 
-  loginFacebook(){
+  loginFacebook(userName){
     SocialAuth.setFacebookApp({id:'1261655493853815', name:'KTB Game Picker 2016'});
     SocialAuth.getFacebookCredentials(['email','public_profile'], SocialAuth.facebookPermissionsType.read)
     .then( (credentials) => {
-      credentials.provider = "facebook";
+      credentials.userName = userName;
       this.setState({credentials});
       const credential = firebase.auth.FacebookAuthProvider.credential(credentials.accessToken);
-      return this.props.actions.loginUser(credential);
+      this.loginCreateSaveUser(credential,userName)//this.props.actions.loginUser(credential,userName);
+    })
+    .catch(this.alertError)
+  }
+
+  loginCreateSaveUser(credential, userName){
+    this.props.actions.loginUser(credential,userName).then(() => {
+      return this.props.actions.saveUser(userName)
+    })
+    .then((id) => {
+      let {credentials} = this.state;
+      credentials.id = id;
+      credentials.provider = this.state.provider;
+      return AsyncStorage.setItem('credentials', JSON.stringify(this.state.credentials))
     })
     .then(() => {
-      this.setState({loginStage:false})
+      this.props.loadingActions.hideLoading();
+      Actions.home();
     })
-    .catch((error) => {
-      console.log(error);
-    })
+    .catch(this.alertError)
   }
 
   saveUser(userName){
-    let {credentials} = this.state;
-    credentials.userName = userName;
-    this.props.actions.setUserName(userName);
-    AsyncStorage.setItem('credentials', JSON.stringify(credentials)).then(()=>{Actions.home()}).catch( (er) => {
-      console.error(er);
-    });
+    this.props.loadingActions.showLoading();
+    if (this.state.provider == 'twitter') {
+      this.loginTwitter(userName);
+    }
+    else{
+      this.loginFacebook(userName)
+    }
   }
   render(){
     return(
@@ -71,7 +91,7 @@ class LoginPage extends React.Component{
         </View>
         <View>
           {this.state.loginStage ?
-                <LoginButtons loginFacebook={this.loginFacebook} loginTwitter={this.loginTwitter}/>
+                <LoginButtons chooseProvider={this.chooseProvider}/>
               : <UserNameInput next={this.saveUser}/>}
         </View>
         {this.props.loading && <LoadingOverlay/> }
@@ -88,7 +108,8 @@ function mapStateToProps(state) {
 }
 function mapActionsToProps(dispatch) {
   return{
-    actions: bindActionCreators(loginActions, dispatch)
+    actions: bindActionCreators(loginActions, dispatch),
+    loadingActions: bindActionCreators(loadingActions, dispatch)
   };
 }
 export default connect(mapStateToProps, mapActionsToProps)(LoginPage);
