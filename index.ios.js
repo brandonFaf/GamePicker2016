@@ -9,7 +9,7 @@ import { AppRegistry, AsyncStorage} from 'react-native';
 import App from './src/js/components/App';
 import configureStore from './src/js/store/configureStore';
 import {Provider} from 'react-redux';
-import {loadGames} from './src/js/actions/gameActions';
+import {loadGames, loadPicks} from './src/js/actions/gameActions';
 import {noUser, loadUser} from './src/js/actions/loginActions'
 import firebase from 'firebase';
 import firebaseConfig from './src/data/firebaseConfig'
@@ -20,6 +20,7 @@ firebase.initializeApp(firebaseConfig);
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     console.log("user logged in");
+
     store.dispatch(loadGames());
     store.dispatch(loadUser())
     } else {

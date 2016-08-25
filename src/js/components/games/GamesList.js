@@ -8,7 +8,7 @@ import{
 
 import GameItem from './GameItem';
 
-export default GamesList  =  ({games}) => {
+export default GamesList  =  ({games, picks}) => {
   function renderSectionHeader(sectionData, sectionID) {
     return (
         <View style={styles.section}>
@@ -21,7 +21,7 @@ export default GamesList  =  ({games}) => {
     <ListView
       dataSource = {games}
       renderRow = {(game) => {
-        return <GameItem game={game}/>
+        return <GameItem pick ={picks[game.id]} game={game}/>
       }}
       renderSectionHeader = {renderSectionHeader}
     >

@@ -1,6 +1,7 @@
 import {AsyncStorage} from 'react-native';
 import * as types from './actionTypes';
 import {Actions, ActionConst} from 'react-native-router-flux';
+import {loadPicks} from './gameActions'
 function userLoggedInSuccess(userName, id) {
   return {type: types.Log_IN_SUCCESS, userName, id}
 }
@@ -36,6 +37,7 @@ export function loadUser() {
     AsyncStorage.getItem('user').then( (user) => {
       user = JSON.parse(user);
       dispatch(userLoggedInSuccess(user.userName, user.uid))
+      dispatch(loadPicks(user.uid));
       Actions.home(ActionConst.REPLACE)
     })
   }

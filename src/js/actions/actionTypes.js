@@ -6,3 +6,4 @@ export const NO_USER = "NO_USER";
 export const USER_SAVED = "USER_SAVED";
 export const SHOW_LOADING = "SHOW_LOADING";
 export const HIDE_LOADING = "HIDE_LOADING"
+export const LOAD_PICKS_SUCCESS = "LOAD_PICKS_SUCCESS"

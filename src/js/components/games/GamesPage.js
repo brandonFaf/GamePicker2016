@@ -17,7 +17,7 @@ class GamesPage extends React.Component{
   render(){
     return(
       <View style = {styles.container}>
-        <GamesList games={this.dataSource.cloneWithRowsAndSections(this.props.games)}/>
+        <GamesList picks={this.props.picks} games={this.dataSource.cloneWithRowsAndSections(this.props.games)}/>
       </View>
     )
   }
@@ -38,7 +38,10 @@ function getGamesByWeek(games, week) {
 }
 
 function mapStateToProps(state, ownProps) {
-  return {games:getGamesByWeek(state.games, ownProps.week)}
+  return {
+    games:getGamesByWeek(state.games, ownProps.week),
+    picks:state.picks
+  }
 }
 export default connect(mapStateToProps)(GamesPage);
 

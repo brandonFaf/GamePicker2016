@@ -6,8 +6,11 @@ function loadGamesSuccess(games) {
   return {type:types.LOAD_GAMES_SUCCESS, games}
 }
 
-function savePickSuccess(game) {
-  return {type:types.SAVE_PICK, game}
+function savePickSuccess(game, pick) {
+  return {type:types.SAVE_PICK, game, pick}
+}
+function loadPicksSuccess(picks) {
+  return {type:types.LOAD_PICKS_SUCCESS, picks}
 }
 
 export function loadGames(){
@@ -27,24 +30,26 @@ export function loadGames(){
   }
 }
 
-function loadPicks(userId) {
-  return function(dispatch) {
-    return firebase.database().ref(`users/${userId}/picks`).once('value').then((snapshot) => {
-      dispatch(loadPicksSuccess(snapshot.val()));
+
+export function savePick(game, userId, pick) {
+  return function (dispatch) {
+    let updates = {};
+    updates[`picks/${userId}/${game.id}`] = pick;
+    updates[`games/${game.id}`] = game;
+    return firebase.database().ref().update(updates).then(() => {
+      dispatch(savePickSuccess(game, pick))
+    }).catch( (err) => {
+      throw err;
     })
   }
 }
 
-export function savePick(game, userId, pick) {
-  return function (dispatch) {
-    const key = firebase.database().ref('picks').push().key;
-    let updates = {};
-    updates[`picks/${key}`] = {gameId: game.id, userId, pick};
-    updates[`games/${game.id}`] = game;
-    return firebase.database().ref().update(updates).then(() => {
-      dispatch(savePickSuccess(game))
-    }).catch( (err) => {
-      throw err;
+export function loadPicks(userId) {
+  return function(dispatch) {
+    return firebase.database().ref(`picks/${userId}`).once('value').then((snapshot) => {
+      if (snapshot.val()) {
+        dispatch(loadPicksSuccess(snapshot.val()));
+      }
     })
   }
 }
