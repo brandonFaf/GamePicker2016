@@ -8,6 +8,8 @@ export default function userReducer(state = {loading:true}, action) {
       return false;
     case types.NO_USER:
       return false;
+    case types.Log_IN_SUCCESS:
+      return false;
     default:
       return state;
   }

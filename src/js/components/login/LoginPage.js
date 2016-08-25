@@ -23,7 +23,6 @@ class LoginPage extends React.Component{
   chooseProvider(provider){
     this.setState({provider});
     this.setState({loginStage:false})
-
   }
 
   alertError(err){
@@ -40,7 +39,7 @@ class LoginPage extends React.Component{
       credentials.userName = userName;
       this.setState({credentials});
       const credential = firebase.auth.TwitterAuthProvider.credential(credentials.oauthToken, credentials.oauthTokenSecret);
-      this.loginCreateSaveUser(credential,userName)//this.props.actions.loginUser(credential, username);
+      this.loginUser(credential,userName)
     })
     .catch(this.alertError)
   }
@@ -52,20 +51,14 @@ class LoginPage extends React.Component{
       credentials.userName = userName;
       this.setState({credentials});
       const credential = firebase.auth.FacebookAuthProvider.credential(credentials.accessToken);
-      this.loginCreateSaveUser(credential,userName)//this.props.actions.loginUser(credential,userName);
+      this.loginUser(credential,userName)
     })
     .catch(this.alertError)
   }
 
-  loginCreateSaveUser(credential, userName){
-    this.props.actions.loginUser(credential,userName).then(() => {
-      return this.props.actions.saveUser(userName)
-    })
-    .then((id) => {
-      let {credentials} = this.state;
-      credentials.id = id;
-      credentials.provider = this.state.provider;
-      return AsyncStorage.setItem('credentials', JSON.stringify(this.state.credentials))
+  loginUser(credential, userName){
+    this.props.actions.loginUser(credential,userName).then((uid) =>{
+      return AsyncStorage.setItem('user', JSON.stringify({uid, userName}))
     })
     .then(() => {
       this.props.loadingActions.hideLoading();

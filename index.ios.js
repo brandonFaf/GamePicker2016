@@ -5,22 +5,31 @@
  */
 
 import React, { Component } from 'react';
-import { AppRegistry } from 'react-native';
+import { AppRegistry, AsyncStorage} from 'react-native';
 import App from './src/js/components/App';
 import configureStore from './src/js/store/configureStore';
 import {Provider} from 'react-redux';
 import {loadGames} from './src/js/actions/gameActions';
-import {checkUserStatus} from './src/js/actions/loginActions'
+import {noUser, loadUser} from './src/js/actions/loginActions'
 import firebase from 'firebase';
 import firebaseConfig from './src/data/firebaseConfig'
 
 const store = configureStore({loading:true});
 firebase.initializeApp(firebaseConfig);
+// AsyncStorage.clear()
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    console.log("user logged in");
+    store.dispatch(loadGames());
+    store.dispatch(loadUser())
+    } else {
+    console.log("no user");
+    store.dispatch(noUser())
+  }
+});
 class GamePicker2016 extends Component {
   constructor(){
     super();
-    store.dispatch(checkUserStatus())
-    store.dispatch(loadGames());
   }
   render() {
     return (

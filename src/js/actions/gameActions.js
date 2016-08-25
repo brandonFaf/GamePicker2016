@@ -27,6 +27,14 @@ export function loadGames(){
   }
 }
 
+function loadPicks(userId) {
+  return function(dispatch) {
+    return firebase.database().ref(`users/${userId}/picks`).once('value').then((snapshot) => {
+      dispatch(loadPicksSuccess(snapshot.val()));
+    })
+  }
+}
+
 export function savePick(game, userId, pick) {
   return function (dispatch) {
     const key = firebase.database().ref('picks').push().key;
