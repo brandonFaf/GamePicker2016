@@ -2,7 +2,7 @@ import * as types from '../actions/actionTypes.js';
 
 function sortById(games) {
   return games.sort( (a,b) => {
-    return a.id > b.id;
+    return a.id - b.id;
   });
 }
 

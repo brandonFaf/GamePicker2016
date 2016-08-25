@@ -14,7 +14,7 @@ export default GameItem = ({game, pick}) => {
       underlayColor = '#ddd'>
       <View style ={styles.row}>
         <Text style={{fontSize:18}}>{game.awayTeam} @ {game.homeTeam} </Text>
-        <View style={{flex:1, flexDirection:'row'}}>
+        <View style={styles.rowText}>
           <Text style={styles.dateText}>{pick}</Text>
         </View>
       </View>
@@ -33,9 +33,9 @@ var styles = StyleSheet.create({
   dateText:{
     fontSize:15,
     color:'#b5b5b5',
-    textAlign:'right'
   },
   rowText:{
     flex:1,
-  }
+    flexDirection:'column',
+    alignItems:'flex-end'}
 });

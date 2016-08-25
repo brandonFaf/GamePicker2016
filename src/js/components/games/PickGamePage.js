@@ -50,9 +50,9 @@ class PickGamePage extends React.Component{
   render(){
     return(
       <View style = {styles.container}>
-        <Team teamName={this.props.game.awayTeam} savePick={this.savePick}/>
+        <Team teamName={this.props.game.awayTeam} savePick={this.savePick} userName = {this.props.user.userName} picks = {this.props.game.pickedAwayTeam}/>
         <Text style = {{fontSize:60, padding:10, top:10}}>@</Text>
-        <Team teamName={this.props.game.homeTeam} savePick={this.savePick}/>
+        <Team teamName={this.props.game.homeTeam} savePick={this.savePick} userName = {this.props.user.userName} picks = {this.props.game.pickedHomeTeam}/>
       </View>
     )
   }

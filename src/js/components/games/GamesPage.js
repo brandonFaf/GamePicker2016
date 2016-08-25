@@ -29,10 +29,11 @@ function getGamesByWeek(games, week) {
   });
   let timeMap = {};
   gamesToDisplay.forEach((game) => {
-      if (!timeMap[game.time]) {
-          timeMap[game.time] = []
+      const key = game.day + " " + game.date + " " +game.time;
+      if (!timeMap[key]) {
+          timeMap[key] = []
       }
-      timeMap[game.time].push(game);
+      timeMap[key].push(game);
   })
   return timeMap;
 }
