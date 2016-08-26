@@ -10,7 +10,7 @@ import App from './src/js/components/App';
 import configureStore from './src/js/store/configureStore';
 import {Provider} from 'react-redux';
 import {loadGames, loadPicks} from './src/js/actions/gameActions';
-import {noUser, loadUser} from './src/js/actions/loginActions'
+import {noUser, loadUser} from './src/js/actions/userActions'
 import firebase from 'firebase';
 import firebaseConfig from './src/data/firebaseConfig'
 

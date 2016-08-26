@@ -3,10 +3,13 @@ import * as types from './actionTypes';
 import {Actions, ActionConst} from 'react-native-router-flux';
 import {loadPicks} from './gameActions'
 function userLoggedInSuccess(userName, id) {
-  return {type: types.Log_IN_SUCCESS, userName, id}
+  return {type: types.LOG_IN_SUCCESS, userName, id}
 }
 export function noUser() {
   return {type: types.NO_USER}
+}
+function userLoggedOut() {
+  return {type: types.LOG_OUT}
 }
 
 export function saveUser(userName, uid){
@@ -20,6 +23,16 @@ export function saveUser(userName, uid){
 }
 
 
+export function loadUser() {
+  return function (dispatch) {
+    AsyncStorage.getItem('user').then( (user) => {
+      user = JSON.parse(user);
+      dispatch(userLoggedInSuccess(user.userName, user.uid))
+      dispatch(loadPicks(user.uid));
+      Actions.home(ActionConst.REPLACE)
+    })
+  }
+}
 export function loginUser(credential,userName) {
   return function (dispatch) {
     return firebase.auth().signInWithCredential(credential).then( (user) => {
@@ -31,14 +44,12 @@ export function loginUser(credential,userName) {
     });
   }
 }
-
-export function loadUser() {
-  return function (dispatch) {
-    AsyncStorage.getItem('user').then( (user) => {
-      user = JSON.parse(user);
-      dispatch(userLoggedInSuccess(user.userName, user.uid))
-      dispatch(loadPicks(user.uid));
-      Actions.home(ActionConst.REPLACE)
+export function logOut() {
+  return dispatch => {
+    firebase.auth().signOut().then(() =>{
+      dispatch(userLoggedOut());
+      AsyncStorage.clear();
+      Actions.login(ActionConst.REPLACE);
     })
   }
 }

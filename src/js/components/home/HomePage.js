@@ -7,31 +7,26 @@ import{
 } from 'react-native';
 import {Actions} from 'react-native-router-flux';
 
-export default class HomePage extends React.Component{
-  constructor(){
-    super();
-    this.go = this.go.bind(this);
-  }
-  go(){
-    console.log("go to weeks");
-    Actions.weeks;
-  }
-  render(){
-    return (
-      <View style={styles.container}>
-        <TouchableHighlight
-          style={styles.button}
-          onPress = {Actions.weeks}>
-          <Text style={styles.buttonText}>Make Picks</Text>
-        </TouchableHighlight>
-        <TouchableHighlight
-          style={styles.button}
-          onPress = {()=> console.log("Check Scores")}>
-            <Text style={styles.buttonText}>Check Scores</Text>
-        </TouchableHighlight>
-      </View>
-    );
-  }
+export default HomePage = () =>{
+  return (
+    <View style={styles.container}>
+      <TouchableHighlight
+        style={styles.button}
+        onPress = {Actions.weeks}>
+        <Text style={styles.buttonText}>Make Picks</Text>
+      </TouchableHighlight>
+      <TouchableHighlight
+        style={styles.button}
+        onPress = {()=> console.log("Check Scores")}>
+          <Text style={styles.buttonText}>Check Scores</Text>
+      </TouchableHighlight>
+      <TouchableHighlight
+        style={styles.button}
+        onPress = {Actions.settings}>
+          <Text style={styles.buttonText}>Settings</Text>
+      </TouchableHighlight>
+    </View>
+  );
 }
 const styles = StyleSheet.create({
   container: {

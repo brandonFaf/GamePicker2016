@@ -5,7 +5,7 @@ import SocialAuth from 'react-native-social-auth';
 import firebase from 'firebase';
 import {bindActionCreators} from 'redux';
 import {connect}  from 'react-redux';
-import * as loginActions  from '../../actions/loginActions';
+import * as userActions  from '../../actions/userActions';
 import * as loadingActions from '../../actions/loadingActions';
 import UserNameInput from './UserNameInput';
 import LoginButtons from './LoginButtons';
@@ -101,7 +101,7 @@ function mapStateToProps(state) {
 }
 function mapActionsToProps(dispatch) {
   return{
-    actions: bindActionCreators(loginActions, dispatch),
+    actions: bindActionCreators(userActions, dispatch),
     loadingActions: bindActionCreators(loadingActions, dispatch)
   };
 }

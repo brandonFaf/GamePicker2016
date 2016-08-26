@@ -4,7 +4,8 @@ import HomePage from './components/home/HomePage';
 import WeeksPage from './components/weeks/WeeksPage';
 import GamesPage from './components/games/GamesPage';
 import PickGamePage from './components/games/PickGamePage';
-import LoginPage from './components/login//LoginPage.js';
+import LoginPage from './components/login/LoginPage';
+import SettingsPage from './components/settings/SettingsPage'
 export default routes = Actions.create(
   <Scene key='root'>
     <scene key='login' initial={true} hideNavBar= {true} component={LoginPage}/>
@@ -12,5 +13,6 @@ export default routes = Actions.create(
     <Scene key ='weeks' component={WeeksPage} title="Weeks"/>
     <Scene key ='games' component={GamesPage} title="Games"/>
     <Scene key ='select' component={PickGamePage}/>
+    <Scene key ='settings' component={SettingsPage} title="Settings"/>
   </Scene>
 )
