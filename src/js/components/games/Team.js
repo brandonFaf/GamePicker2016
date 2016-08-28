@@ -14,10 +14,11 @@ export default TeamImage = ({teamName, savePick, picks, userName, selected}) => 
       <Text style = {styles.teamText}>{teamName}</Text>
       <TouchableHighlight
         onPress= {()=>{savePick(teamName)}}
-        underlayColor = '#F5FCFF'>
+        underlayColor = '#F5FCFF'
+        style={[styles.border,selected && styles.selected]}>
         <Image
           source = {TeamImages[teamName]}
-          style = {[styles.pic,selected && styles.selected]} />
+          style = {[styles.pic,]} />
       </TouchableHighlight>
       {picks && picks.map((user, index) => {
         if(user != userName)
@@ -43,8 +44,13 @@ var styles = StyleSheet.create({
     borderRadius:60,
     backgroundColor:'#333'
   },
-  selected:{
+  border:{
     borderWidth:8,
-    borderColor:"#45dd55"
+    borderRadius:90,
+    borderColor:'#fff'
+  },
+  selected:{
+    borderColor:"#45dd55",
+
   }
 });
