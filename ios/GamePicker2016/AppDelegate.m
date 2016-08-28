@@ -23,8 +23,8 @@
   NSURL *jsCodeLocation;
 
   
-//#ifdef DEBUG
-#if (TARGET_IPHONE_SIMULATOR)
+#ifdef DEBUG
+//#if (TARGET_IPHONE_SIMULATOR)
     jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 #else
     jsCodeLocation = [CodePush bundleURL];
