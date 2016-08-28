@@ -8,6 +8,7 @@ import {
 import {Actions} from 'react-native-router-flux';
 
 export default GameItem = ({game, pick}) => {
+  const correct = pick == game.winner
   return (
     <TouchableHighlight
       onPress={()=> Actions.select({id:game.id})}
@@ -15,7 +16,7 @@ export default GameItem = ({game, pick}) => {
       <View style ={styles.row}>
         <Text style={{fontSize:18}}>{game.awayTeam} @ {game.homeTeam} </Text>
         <View style={styles.rowText}>
-          <Text style={styles.dateText}>{pick}</Text>
+          <Text style={[styles.dateText, game.winner && (correct?styles.correct:styles.wrong)]}>{pick}</Text>
         </View>
       </View>
     </TouchableHighlight>
@@ -33,6 +34,12 @@ var styles = StyleSheet.create({
   dateText:{
     fontSize:15,
     color:'#b5b5b5',
+  },
+  correct:{
+    color:'green'
+  },
+  wrong:{
+    color:'red'
   },
   rowText:{
     flex:1,
