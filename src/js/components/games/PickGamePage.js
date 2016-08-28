@@ -39,28 +39,33 @@ class PickGamePage extends React.Component{
   }
 
   savePick(teamName){
-    if(!this.isValid(this.state.game)){
-      this.setState({error: "Oops You tried to make/change your pick too late"})
-      return;
-    };
-    if (teamName == this.state.game.awayTeam) {
-      this.addPick(this.state.game, 'pickedAwayTeam')
-      this.removePick(this.state.game,'pickedHomeTeam');
+    if (this.props.user.adminActive) {
+      this.state.game.winner = teamName;
     }
     else{
-      this.addPick(this.state.game, 'pickedHomeTeam')
-      this.removePick(this.state.game,'pickedAwayTeam');
+      if(!this.isValid(this.state.game)){
+        this.setState({error: "Oops You tried to make/change your pick too late"})
+        return;
+      };
+      if (teamName == this.state.game.awayTeam) {
+        this.addPick(this.state.game, 'pickedAwayTeam')
+        this.removePick(this.state.game,'pickedHomeTeam');
+      }
+      else{
+        this.addPick(this.state.game, 'pickedHomeTeam')
+        this.removePick(this.state.game,'pickedAwayTeam');
+      }
     }
-    this.state.game.pick = teamName;
-    this.props.actions.savePick(this.state.game, this.props.user.id, teamName );
+    this.props.actions.savePick(this.state.game, teamName );
   }
 
   render(){
     const {game,user,picks,loading} = this.props;
     return(
-      <View style = {{flex:1,flexDirection:'column'}}>
-         <View style = {{top:60, paddingBottom:60, paddingTop:15,alignItems:'center'}}>
-         {this.state.error && <Text style= {styles.errorText}>{this.state.error}</Text>}
+      <View style = {[styles.outterContainer, user.adminActive && styles.adminActive]}>
+         <View style = {styles.errorView}>
+         {this.state.error && <Text style= {[styles.topText,styles.errorText]}>{this.state.error}</Text>}
+         {game.winner && <Text style = {[styles.topText, styles.winnerText]}>Winner: {game.winner}</Text>}
         </View>
         <View style = {styles.container}>
           <Team teamName={game.awayTeam} savePick={this.savePick} userName = {user.userName} picks = {game.pickedAwayTeam} selected={picks[game.id]==game.awayTeam}/>
@@ -106,12 +111,32 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems:'flex-start',
   },
-  errorText:{
+  outterContainer:{
+    flex:1,
+    flexDirection:'column'
+  },
+  errorView:{
+    top:60,
+    paddingBottom:60,
+    paddingTop:15,
+    alignItems:'center'
+  },
+  adminActive:{
+    backgroundColor:'#aaa'
+  },
+  topText:{
     borderWidth:1,
     margin:10,
     padding:5,
     borderRadius:10,
+  },
+  errorText:{
     color:'red',
     borderColor:'red'
+  },
+  winnerText:{
+    fontSize:25,
+    color:'green',
+    borderColor:'green'
   }
 });

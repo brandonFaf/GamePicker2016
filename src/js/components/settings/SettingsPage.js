@@ -12,6 +12,11 @@ const SettingsPage = ({actions, user}) =>{
         onPress = {actions.logOut}>
         <Text style={styles.buttonText}>Log Out</Text>
       </TouchableHighlight>
+      {user.isAdmin && <TouchableHighlight
+        style={styles.button}
+        onPress = {actions.toggleAdmin}>
+        <Text style={styles.buttonText}>Admin is {user.adminActive?"ON":"OFF"}</Text>
+      </TouchableHighlight> }
     </View>
   );
 }

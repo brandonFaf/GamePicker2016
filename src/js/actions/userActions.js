@@ -1,9 +1,8 @@
-import {AsyncStorage} from 'react-native';
 import * as types from './actionTypes';
 import {Actions, ActionConst} from 'react-native-router-flux';
 import {loadPicks} from './gameActions'
-function userLoggedInSuccess(userName, id) {
-  return {type: types.LOG_IN_SUCCESS, userName, id}
+function userLoggedInSuccess(user) {
+  return {type: types.LOG_IN_SUCCESS, user}
 }
 export function noUser() {
   return {type: types.NO_USER}
@@ -11,28 +10,19 @@ export function noUser() {
 function userLoggedOut() {
   return {type: types.LOG_OUT}
 }
-
+export function toggleAdmin() {
+  return {type:types.TOGGLE_ADMIN}
+}
 export function saveUser(userName, uid){
   return function (dispatch) {
     let updates = {};
     updates['users/' + uid] = {userName};
     firebase.database().ref().update(updates).then(() => {
-      dispatch(userLoggedInSuccess(userName, uid))
+      dispatch(userLoggedInSuccess({user:{userName, uid}}))
     });
   }
 }
 
-
-export function loadUser() {
-  return function (dispatch) {
-    AsyncStorage.getItem('user').then( (user) => {
-      user = JSON.parse(user);
-      dispatch(userLoggedInSuccess(user.userName, user.uid))
-      dispatch(loadPicks(user.uid));
-      Actions.home(ActionConst.REPLACE)
-    })
-  }
-}
 export function loginUser(credential,userName) {
   return function (dispatch) {
     return firebase.auth().signInWithCredential(credential).then( (user) => {
@@ -42,6 +32,16 @@ export function loginUser(credential,userName) {
     .catch( (err) => {
       //TODO add alert saying login failed and go back to login screen.
     });
+  }
+}
+export function loadUser(uid) {
+  return function (dispatch) {
+    firebase.database().ref(`users/${uid}`).once('value').then( (user) => {
+      let userObj = Object.assign(user.val(),{uid})
+      dispatch(userLoggedInSuccess(userObj))
+      dispatch(loadPicks(uid));
+      Actions.home(ActionConst.REPLACE)
+    })
   }
 }
 export function logOut() {

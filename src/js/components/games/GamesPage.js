@@ -16,7 +16,7 @@ class GamesPage extends React.Component{
   }
   render(){
     return(
-      <View style = {styles.container}>
+      <View style = {[styles.container, this.props.adminActive && styles.adminActive]}>
         <GamesList picks={this.props.picks} games={this.dataSource.cloneWithRowsAndSections(this.props.games)}/>
       </View>
     )
@@ -41,7 +41,8 @@ function getGamesByWeek(games, week) {
 function mapStateToProps(state, ownProps) {
   return {
     games:getGamesByWeek(state.games, ownProps.week),
-    picks:state.picks
+    picks:state.picks,
+    adminActive:state.user.adminActive
   }
 }
 export default connect(mapStateToProps)(GamesPage);
@@ -52,4 +53,7 @@ const styles = StyleSheet.create({
     paddingTop:60,
     justifyContent: 'flex-start',
   },
+  adminActive:{
+    backgroundColor:'#aaa'
+  }
 });

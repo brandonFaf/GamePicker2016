@@ -22,7 +22,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     console.log("user logged in");
 
     store.dispatch(loadGames());
-    store.dispatch(loadUser())
+    store.dispatch(loadUser(user.uid))
     } else {
     console.log("no user");
     store.dispatch(noUser())

@@ -5,14 +5,15 @@ import {showLoading} from './loadingActions';
 function loadGamesSuccess(games) {
   return {type:types.LOAD_GAMES_SUCCESS, games}
 }
-function savePickSuccess(game, pick) {
-  return {type:types.SAVE_PICK, game, pick}
+function savePickSuccess(game, teamName) {
+  return {type:types.SAVE_PICK, game, teamName}
+}
+function saveWinnerSuccess(game) {
+  return {type:types.SAVE_WINNER, game}
 }
 function loadPicksSuccess(picks) {
   return {type:types.LOAD_PICKS_SUCCESS, picks}
 }
-
-
 export function loadGames(){
   return function (dispatch) {
     return firebase.database().ref('games').once('value').then((snapshot) => {
@@ -29,28 +30,36 @@ export function loadGames(){
     })
   }
 }
-
-
-
+export function savePick(game, teamName) {
+  return (dispatch, getState) => {
+    dispatch(showLoading())
+    let updates = {};
+    const {user} = getState();
+    if (user.adminActive) {
+      updates[`winners/${game.id}`] = teamName;
+    }
+    else{
+      updates[`picks/${user.id}/${game.id}`] = teamName;
+    }
+    updates[`games/${game.id}`] = game;
+    return firebase.database().ref().update(updates).then(() => {
+      if (user.adminActive) {
+        dispatch(saveWinnerSuccess(game))
+      }
+      else{
+        dispatch(savePickSuccess(game, teamName))
+      }
+    }).catch( (err) => {
+      throw err;
+    })
+  }
+}
 export function loadPicks(userId) {
   return function(dispatch) {
     return firebase.database().ref(`picks/${userId}`).once('value').then((snapshot) => {
       if (snapshot.val()) {
         dispatch(loadPicksSuccess(snapshot.val()));
       }
-    })
-  }
-}
-export function savePick(game, userId, pick) {
-  return function (dispatch) {
-    dispatch(showLoading())
-    let updates = {};
-    updates[`picks/${userId}/${game.id}`] = pick;
-    updates[`games/${game.id}`] = game;
-    return firebase.database().ref().update(updates).then(() => {
-      dispatch(savePickSuccess(game, pick))
-    }).catch( (err) => {
-      throw err;
     })
   }
 }

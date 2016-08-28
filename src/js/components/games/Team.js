@@ -18,7 +18,7 @@ export default TeamImage = ({teamName, savePick, picks, userName, selected}) => 
         style={[styles.border,selected && styles.selected]}>
         <Image
           source = {TeamImages[teamName]}
-          style = {[styles.pic,]} />
+          style = {styles.pic} />
       </TouchableHighlight>
       {picks && picks.map((user, index) => {
         if(user != userName)

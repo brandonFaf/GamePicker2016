@@ -6,7 +6,7 @@ export default function picksReducer(state = {}, action) {
       return action.picks;
     case types.SAVE_PICK:
       var pick = {}
-      pick[action.game.id] = action.pick
+      pick[action.game.id] = action.teamName
       return Object.assign({}, state, pick)
     default:
       return state;
