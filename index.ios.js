@@ -13,7 +13,7 @@ import {loadGames, loadPicks} from './src/js/actions/gameActions';
 import {noUser, loadUser} from './src/js/actions/userActions'
 import firebase from 'firebase';
 import firebaseConfig from './src/data/firebaseConfig'
-
+import codePush from 'react-native-code-push'
 const store = configureStore({loading:true});
 firebase.initializeApp(firebaseConfig);
 // AsyncStorage.clear()
@@ -41,6 +41,6 @@ class GamePicker2016 extends Component {
   }
 }
 
-
+GamePicker2016 = codePush(GamePicker2016);
 
 AppRegistry.registerComponent('GamePicker2016', () => GamePicker2016);
