@@ -1,10 +1,7 @@
 import React from 'react';
-import{
-  View,
-  Text,
-  StyleSheet,
-} from 'react-native';
+import{View, Text, StyleSheet, ActivityIndicator} from 'react-native';
 import {connect} from 'react-redux';
+import moment from 'moment';
 import Team from './Team';
 import {bindActionCreators} from 'redux';
 import * as selectActions from '../../actions/gameActions';
@@ -34,7 +31,18 @@ class PickGamePage extends React.Component{
 
   }
 
+  isValid(game){
+    const format = "MMMM D h:mm a";
+    const now = moment(moment(), format);
+    const gameTime = moment(game.date + " " + game.time, format);
+    return now.isBefore(gameTime);
+  }
+
   savePick(teamName){
+    if(!this.isValid(this.state.game)){
+      this.setState({error: "Oops You tried to make/change your pick too late"})
+      return;
+    };
     if (teamName == this.state.game.awayTeam) {
       this.addPick(this.state.game, 'pickedAwayTeam')
       this.removePick(this.state.game,'pickedHomeTeam');
@@ -48,11 +56,20 @@ class PickGamePage extends React.Component{
   }
 
   render(){
+    const {game,user,picks,loading} = this.props;
     return(
-      <View style = {styles.container}>
-        <Team teamName={this.props.game.awayTeam} savePick={this.savePick} userName = {this.props.user.userName} picks = {this.props.game.pickedAwayTeam}/>
-        <Text style = {{fontSize:60, padding:10, top:10}}>@</Text>
-        <Team teamName={this.props.game.homeTeam} savePick={this.savePick} userName = {this.props.user.userName} picks = {this.props.game.pickedHomeTeam}/>
+      <View style = {{flex:1,flexDirection:'column'}}>
+         <View style = {{top:60, paddingBottom:60, paddingTop:15,alignItems:'center'}}>
+         {this.state.error && <Text style= {styles.errorText}>{this.state.error}</Text>}
+        </View>
+        <View style = {styles.container}>
+          <Team teamName={game.awayTeam} savePick={this.savePick} userName = {user.userName} picks = {game.pickedAwayTeam} selected={picks[game.id]==game.awayTeam}/>
+          <Text style = {{fontSize:60, padding:10, top:10}}>@</Text>
+          <Team teamName={game.homeTeam} savePick={this.savePick} userName = {user.userName} picks = {game.pickedHomeTeam} selected={picks[game.id]==game.homeTeam}/>
+        </View>
+        <View style={{flex:2}}>
+        {loading && <ActivityIndicator animating={true} color={'#222'} size={'large'}/>}
+        </View>
       </View>
     )
   }
@@ -72,7 +89,9 @@ function mapStateToProps(state, ownProps) {
   const game = getGameById(state.games, ownProps.id);
   return {
     game,
-    user: state.user
+    user: state.user,
+    picks: state.picks,
+    loading:state.loading
   };
 }
 function mapActionsToProps(dispatch){
@@ -82,10 +101,17 @@ export default connect(mapStateToProps, mapActionsToProps)(PickGamePage);
 
 const styles = StyleSheet.create({
     container: {
-      top:75,
       flex: 1,
       flexDirection:'row',
       justifyContent: 'center',
       alignItems:'flex-start',
   },
+  errorText:{
+    borderWidth:1,
+    margin:10,
+    padding:5,
+    borderRadius:10,
+    color:'red',
+    borderColor:'red'
+  }
 });

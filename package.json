@@ -7,6 +7,8 @@
   },
   "dependencies": {
     "firebase": "^3.2.1",
+    "moment-timezone": "^0.5.5",
+    "momentjs": "^1.1.15",
     "react": "15.2.1",
     "react-native": "0.30.0",
     "react-native-router-flux": "^3.33.2",

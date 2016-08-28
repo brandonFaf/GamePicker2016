@@ -8,16 +8,16 @@ import {
 } from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import TeamImages from './TeamImages';
-export default TeamImage = ({teamName, savePick, picks, userName}) => {
+export default TeamImage = ({teamName, savePick, picks, userName, selected}) => {
   return (
     <View style = {styles.teamContainer}>
       <Text style = {styles.teamText}>{teamName}</Text>
       <TouchableHighlight
-        onPress= {()=>{savePick(teamName); Actions.pop()}}
+        onPress= {()=>{savePick(teamName)}}
         underlayColor = '#F5FCFF'>
         <Image
           source = {TeamImages[teamName]}
-          style = {styles.pic} />
+          style = {[styles.pic,selected && styles.selected]} />
       </TouchableHighlight>
       {picks && picks.map((user, index) => {
         if(user != userName)
@@ -43,4 +43,8 @@ var styles = StyleSheet.create({
     borderRadius:60,
     backgroundColor:'#333'
   },
+  selected:{
+    borderWidth:8,
+    borderColor:"#45dd55"
+  }
 });
