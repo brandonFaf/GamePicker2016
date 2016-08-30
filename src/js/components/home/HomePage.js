@@ -17,7 +17,7 @@ export default HomePage = () =>{
       </TouchableHighlight>
       <TouchableHighlight
         style={styles.button}
-        onPress = {()=> console.log("Check Scores")}>
+        onPress ={Actions.scores}>
           <Text style={styles.buttonText}>Check Scores</Text>
       </TouchableHighlight>
       <TouchableHighlight
