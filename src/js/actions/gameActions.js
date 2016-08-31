@@ -11,8 +11,14 @@ function savePickSuccess(game, teamName) {
 function saveWinnerSuccess(game) {
   return {type:types.SAVE_WINNER, game}
 }
+function saveYearlySuccess(game,teamName) {
+  return {type:types.SAVE_YEARLY, game, teamName}
+}
 function loadPicksSuccess(picks) {
   return {type:types.LOAD_PICKS_SUCCESS, picks}
+}
+function loadYearlySuccess(picks) {
+  return {type:types.LOAD_YEARLY_SUCCESS, picks}
 }
 export function loadGames(){
   return function (dispatch) {
@@ -38,6 +44,9 @@ export function savePick(game, teamName) {
     if (user.adminActive) {
       updates[`winners/${game.id}`] = teamName;
     }
+    else if (user.isYearly) {
+      updates[`yearly/${user.id}/${game.id}`] =teamName;
+    }
     else{
       updates[`picks/${user.id}/${game.id}`] = teamName;
     }
@@ -45,6 +54,9 @@ export function savePick(game, teamName) {
     return firebase.database().ref().update(updates).then(() => {
       if (user.adminActive) {
         dispatch(saveWinnerSuccess(game))
+      }
+      else if (user.isYearly) {
+        dispatch(saveYearlySuccess(game,teamName))
       }
       else{
         dispatch(savePickSuccess(game, teamName))
@@ -59,6 +71,15 @@ export function loadPicks(userId) {
     return firebase.database().ref(`picks/${userId}`).once('value').then((snapshot) => {
       if (snapshot.val()) {
         dispatch(loadPicksSuccess(snapshot.val()));
+      }
+    })
+  }
+}
+export function loadYearly(userId) {
+  return function(dispatch) {
+    return firebase.database().ref(`yearly/${userId}`).once('value').then((snapshot) => {
+      if (snapshot.val()) {
+        dispatch(loadYearlySuccess(snapshot.val()));
       }
     })
   }

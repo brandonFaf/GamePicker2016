@@ -9,6 +9,7 @@ export default function userReducer(state = {loading:true}, action) {
     case types.SAVE_PICK:
     case types.SAVE_WINNER:
     case types.LOG_IN_SUCCESS:
+    case types.SAVE_YEARLY:
       return false;
     default:
       return state;

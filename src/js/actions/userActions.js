@@ -1,11 +1,14 @@
 import * as types from './actionTypes';
 import {Actions, ActionConst} from 'react-native-router-flux';
-import {loadPicks} from './gameActions'
+import {loadPicks, loadYearly} from './gameActions'
 function userLoggedInSuccess(user) {
   return {type: types.LOG_IN_SUCCESS, user}
 }
 export function noUser() {
   return {type: types.NO_USER}
+}
+export function setYearly(yearly) {
+  return {type: types.SET_YEARLY, yearly}
 }
 function userLoggedOut() {
   return {type: types.LOG_OUT}
@@ -40,6 +43,7 @@ export function loadUser(uid) {
       let userObj = Object.assign(user.val(),{uid})
       dispatch(userLoggedInSuccess(userObj))
       dispatch(loadPicks(uid));
+      dispatch(loadYearly(uid));
       Actions.home(ActionConst.REPLACE)
     })
   }
