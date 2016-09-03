@@ -1,5 +1,8 @@
 import * as types from './actionTypes';
-import GameAPI from '../../data/GameAPI';
+//Offline
+import GameAPI from '../../data/OfflineGameAPI';
+//Firebase
+// import GameAPI from '../../data/FirebaseGameAPI';
 import firebase from 'firebase';
 import {showLoading} from './loadingActions';
 function loadGamesSuccess(games) {
@@ -16,7 +19,7 @@ function loadPicksSuccess(picks) {
 }
 export function loadGames(){
   return function (dispatch) {
-    return firebase.database().ref('games').once('value').then((snapshot) => {
+    return GameAPI.loadGames().then((snapshot) => {
       //TODO: return only the current week and week before and after and get the other weeks later
       //A hacky way to do this would be to grab like 16*3 games around the current week. I'll grab extras though because of byes
       let keys = Object.keys(snapshot.val());
@@ -42,7 +45,7 @@ export function savePick(game, teamName) {
       updates[`picks/${user.id}/${game.id}`] = teamName;
     }
     updates[`games/${game.id}`] = game;
-    return firebase.database().ref().update(updates).then(() => {
+    return GameAPI.savePick(updates).then(() => {
       if (user.adminActive) {
         dispatch(saveWinnerSuccess(game))
       }
@@ -56,7 +59,7 @@ export function savePick(game, teamName) {
 }
 export function loadPicks(userId) {
   return function(dispatch) {
-    return firebase.database().ref(`picks/${userId}`).once('value').then((snapshot) => {
+    return GameAPI.loadUserPicks(userId).then((snapshot) => {
       if (snapshot.val()) {
         dispatch(loadPicksSuccess(snapshot.val()));
       }

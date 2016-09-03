@@ -1,15 +1,42 @@
 import firebase from 'firebase'
+//Offline
+import GameAPI from '../../data/OfflineGameAPI';
+import UserAPI from '../../data/OfflineUserAPI';
+//Firebase
+// import GameAPI from '../../data/FirebaseGameAPI';
+// import UserAPI from '../../data/FirebaseUserAPI';
+function fake1() {
+  console.log(1);
+}
+function fake7() {
+  console.log(1);
+}
+function fake6() {
+  console.log(1);
+}
+function fake5() {
+  console.log(1);
+}
+function fake4() {
+  console.log(1);
+}
+function fake3() {
+  console.log(1);
+}
+function fake2() {
+  console.log(1);
+}
 
 export default function getUsersAndWinners() {
   return new Promise( (resolve, reject)=> {
     let picks;
     let winners;
-    firebase.database().ref('picks').once('value').then((snapshot) => {
+    GameAPI.loadPicks().then((snapshot) => {
       picks = snapshot.val()
-      return firebase.database().ref('winners').once('value')
+      return GameAPI.loadWinners();
     }).then((winnerSnap) => {
       winners = winnerSnap.val()
-      return firebase.database().ref('users').once('value')
+      return UserAPI.loadAllUsers()
     }).then((userSnap)=>{
       const users = userSnap.val();
       const uids = Object.keys(picks)

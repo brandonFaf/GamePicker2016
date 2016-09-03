@@ -1,6 +1,11 @@
 import * as types from './actionTypes';
 import {Actions, ActionConst} from 'react-native-router-flux';
 import {loadPicks} from './gameActions'
+//Offline
+import UserAPI from '../../data/OfflineUserAPI';
+//Firebase
+// import UserAPI from '../../data/FirebaseUserAPI';
+
 function userLoggedInSuccess(user) {
   return {type: types.LOG_IN_SUCCESS, user}
 }
@@ -34,22 +39,22 @@ export function loginUser(credential,userName) {
     });
   }
 }
-export function loadUser(uid) {
-  return function (dispatch) {
-    firebase.database().ref(`users/${uid}`).once('value').then( (user) => {
-      let userObj = Object.assign(user.val(),{uid})
-      dispatch(userLoggedInSuccess(userObj))
-      dispatch(loadPicks(uid));
-      Actions.home(ActionConst.REPLACE)
-    })
-  }
-}
 export function logOut() {
   return dispatch => {
     firebase.auth().signOut().then(() =>{
       dispatch(userLoggedOut());
       AsyncStorage.clear();
       Actions.login(ActionConst.REPLACE);
+    })
+  }
+}
+export function loadUser(uid) {
+  return function (dispatch) {
+    UserAPI.loadUser(uid).then( (user) => {
+      let userObj = Object.assign(user.val(),{uid})
+      dispatch(userLoggedInSuccess(userObj))
+      dispatch(loadPicks(uid));
+      Actions.home(ActionConst.REPLACE)
     })
   }
 }
