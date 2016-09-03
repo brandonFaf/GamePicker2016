@@ -13,12 +13,13 @@ export default class ScoresPage extends React.Component{
 
 
   render(){
+    const {userName} = this.props;
     return(
       <View>
       <View style = {styles.container}>
         <Text style = {styles.title}>Leaderboard</Text>
         {this.state.scores.map(function(n,i,){
-          return <View style = {styles.textView}key = {n.userName} ><Text  style = {styles.text}>{i+1}. {n.userName}: {n.score}</Text></View>
+          return <View style = {styles.textView}key = {n.userName} ><Text  style = {[styles.text,n.userName == userName && styles.selected]}>{i+1}. {n.userName}: {n.score}</Text></View>
         })}
       </View>
          {this.state.loading && <LoadingOverlay/>}
@@ -37,6 +38,9 @@ const styles = StyleSheet.create({
     fontSize: 40,
     textAlign: 'center',
     margin: 10,
+  },
+  selected:{
+    fontWeight:'bold',
   },
   textView:{
     padding:8,

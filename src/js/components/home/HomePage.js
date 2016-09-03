@@ -24,7 +24,7 @@ class HomePage extends React.Component{
         </TouchableHighlight>
         <TouchableHighlight
           style={styles.button}
-          onPress ={Actions.scores}>
+          onPress ={()=>Actions.scores({userName:this.props.userName})}>
             <Text style={styles.buttonText}>Check Scores</Text>
         </TouchableHighlight>
         <TouchableHighlight
