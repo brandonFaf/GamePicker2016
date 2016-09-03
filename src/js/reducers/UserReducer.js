@@ -9,6 +9,8 @@ export default function userReducer(state = {isAdmin:false,adminActive:false}, a
       return {}
     case types.TOGGLE_ADMIN:
       return Object.assign({}, state, {adminActive:!state.adminActive})
+    case types.SET_YEARLY:
+      return Object.assign({}, state, {isYearly:action.yearly})
     default:
       return state;
   }

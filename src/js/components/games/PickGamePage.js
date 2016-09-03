@@ -34,7 +34,8 @@ class PickGamePage extends React.Component{
   isValid(game){
     const format = "MMMM D h:mm a";
     const now = moment(moment(), format);
-    const gameTime = moment(game.date + " " + game.time, format);
+    const gameTime = this.props.user.isYearly?moment("September 8 8:30pm", format):moment(game.date + " " + game.time, format);
+
     return now.isBefore(gameTime);
   }
 
@@ -47,13 +48,15 @@ class PickGamePage extends React.Component{
         this.setState({error: "Oops You tried to make/change your pick too late"})
         return;
       };
-      if (teamName == this.state.game.awayTeam) {
-        this.addPick(this.state.game, 'pickedAwayTeam')
-        this.removePick(this.state.game,'pickedHomeTeam');
-      }
-      else{
-        this.addPick(this.state.game, 'pickedHomeTeam')
-        this.removePick(this.state.game,'pickedAwayTeam');
+      if (!this.props.user.isYearly) {
+        if (teamName == this.state.game.awayTeam) {
+          this.addPick(this.state.game, 'pickedAwayTeam')
+          this.removePick(this.state.game,'pickedHomeTeam');
+        }
+        else{
+          this.addPick(this.state.game, 'pickedHomeTeam')
+          this.removePick(this.state.game,'pickedAwayTeam');
+        }
       }
     }
     this.props.actions.savePick(this.state.game, teamName );
@@ -92,10 +95,11 @@ function getGameById(games, id) {
 
 function mapStateToProps(state, ownProps) {
   const game = getGameById(state.games, ownProps.id);
+  const picks = state.user.isYearly?state.yearly:state.picks
   return {
     game,
     user: state.user,
-    picks: state.picks,
+    picks,
     loading:state.loading
   };
 }

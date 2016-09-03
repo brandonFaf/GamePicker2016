@@ -1,16 +1,19 @@
 import * as types from './actionTypes';
 import {Actions, ActionConst} from 'react-native-router-flux';
-import {loadPicks} from './gameActions'
 //Offline
 import UserAPI from '../../data/OfflineUserAPI';
 //Firebase
 // import UserAPI from '../../data/FirebaseUserAPI';
 
+import {loadPicks, loadYearly} from './gameActions'
 function userLoggedInSuccess(user) {
   return {type: types.LOG_IN_SUCCESS, user}
 }
 export function noUser() {
   return {type: types.NO_USER}
+}
+export function setYearly(yearly) {
+  return {type: types.SET_YEARLY, yearly}
 }
 function userLoggedOut() {
   return {type: types.LOG_OUT}

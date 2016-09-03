@@ -1,4 +1,4 @@
-import * as types from '../actions/actionTypes.js';
+ import * as types from '../actions/actionTypes.js';
 
 function sortById(games) {
   return games.sort( (a,b) => {
