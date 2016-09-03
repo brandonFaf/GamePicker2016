@@ -40,11 +40,14 @@ export default function getUsersAndWinners() {
     }).then((userSnap)=>{
       const users = userSnap.val();
       const uids = Object.keys(picks)
-      const scores = uids.map((uid,i) => {
+      let scores = uids.map((uid,i) => {
         const score =  winners.reduce((total, cur, index) => {
           return cur == picks[uid][index]? ++total: total
         },0)
         return {userName:users[uid].userName,score};
+      })
+      scores = scores.sort( (a,b) => {
+        return b.score - a.score;
       })
       resolve(scores)
     }).catch((err) =>{
