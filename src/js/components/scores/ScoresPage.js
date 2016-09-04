@@ -5,12 +5,11 @@ import LoadingOverlay from '../common/loading'
 export default class ScoresPage extends React.Component{
   constructor(props){
     super(props);
-    this.state = {scores:[], loading:true}
+    this.state = {scores:[], yearScores:[], loading:true}
     getScores().then((scores) => {
-      this.setState({scores, loading:!this.state.loading});
+      this.setState({scores:scores.scoresWeekly, yearScores:scores.scoresYearly, loading:!this.state.loading});
     })
   }
-
 
   render(){
     const {userName} = this.props;
@@ -20,6 +19,12 @@ export default class ScoresPage extends React.Component{
         <Text style = {styles.title}>Leaderboard</Text>
         {this.state.scores.map(function(n,i,){
           return <View style = {styles.textView}key = {n.userName} ><Text  style = {[styles.text,n.userName == userName && styles.selected]}>{i+1}. {n.userName}: {n.score}</Text></View>
+        })}
+      </View>
+      <View style = {styles.differentContainer}>
+        <Text style = {styles.title}>Year Picks</Text>
+        {this.state.yearScores.map(function(n,i,){
+          return n && <View style = {styles.textView}key = {n.userName} ><Text  style = {[styles.text,n.userName == userName && styles.selected]}>{i+1}. {n.userName}: {n.score}</Text></View>
         })}
       </View>
          {this.state.loading && <LoadingOverlay/>}
@@ -33,6 +38,12 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: 'flex-start',
       top:60,
+    },
+    differentContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      top:60,
+      height:300,
     },
   title: {
     fontSize: 40,

@@ -41,6 +41,13 @@ export default class GameAPI{
       }, 1000)
     })
   }
+  static loadYearPicks(){
+    return new Promise( (resolve,reject) => {
+      setTimeout( () => {
+        resolve({val: ()=>Object.assign([],data.yearly)})
+      }, 1000)
+    })
+  }
 
   static saveWinner(key,winner) {
     const gameId = key.split('/')[1];

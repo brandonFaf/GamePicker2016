@@ -31,6 +31,7 @@ export default function getUsersAndWinners() {
   return new Promise( (resolve, reject)=> {
     let picks;
     let winners;
+    let users;
     GameAPI.loadPicks().then((snapshot) => {
       picks = snapshot.val()
       return GameAPI.loadWinners();
@@ -38,18 +39,33 @@ export default function getUsersAndWinners() {
       winners = winnerSnap.val()
       return UserAPI.loadAllUsers()
     }).then((userSnap)=>{
-      const users = userSnap.val();
+      users = userSnap.val();
+      return GameAPI.loadYearPicks()
+    }).then((yearSnap) => {
+      const yearlyPicks = yearSnap.val();
       const uids = Object.keys(picks)
-      let scores = uids.map((uid,i) => {
+      let scoresWeekly = uids.map((uid,i) => {
         const score =  winners.reduce((total, cur, index) => {
           return cur == picks[uid][index]? ++total: total
         },0)
         return {userName:users[uid].userName,score};
       })
-      scores = scores.sort( (a,b) => {
+      let scoresYearly = uids.map((uid,i) => {
+        if (yearlyPicks[uid]) {
+          const score =  winners.reduce((total, cur, index) => {
+            return cur == yearlyPicks[uid][index]? ++total:total
+          },0)
+          return {userName:users[uid].userName,score};
+        }
+        return;
+      })
+      scoresWeekly = scoresWeekly.sort( (a,b) => {
         return b.score - a.score;
       })
-      resolve(scores)
+      scoresYearly = scoresYearly.sort( (a,b) => {
+        return b.score - a.score;
+      })
+      resolve({scoresWeekly, scoresYearly})
     }).catch((err) =>{
       reject(err)
     })
