@@ -1,8 +1,8 @@
 import * as types from './actionTypes';
 //Offline
-import GameAPI from '../../data/OfflineGameAPI';
+// import GameAPI from '../../data/OfflineGameAPI';
 //Firebase
-// import GameAPI from '../../data/FirebaseGameAPI';
+import GameAPI from '../../data/FirebaseGameAPI';
 import firebase from 'firebase';
 import {showLoading} from './loadingActions';
 function loadGamesSuccess(games) {

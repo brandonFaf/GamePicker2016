@@ -44,6 +44,6 @@ android/keystores/debug.keystore
 # Custom
 src/js/components/games/images/
 ios/GamePicker2016/Images.xcassets/
-src/data/firebaseConfig.js
+src/data/firebaseConfig*.js
 Schedule.json
 /src/data/nfl-pickeroo-2016-export.js

@@ -1,10 +1,10 @@
 import firebase from 'firebase'
 //Offline
-import GameAPI from '../../data/OfflineGameAPI';
-import UserAPI from '../../data/OfflineUserAPI';
+// import GameAPI from '../../data/OfflineGameAPI';
+// import UserAPI from '../../data/OfflineUserAPI';
 //Firebase
-// import GameAPI from '../../data/FirebaseGameAPI';
-// import UserAPI from '../../data/FirebaseUserAPI';
+import GameAPI from '../../data/FirebaseGameAPI';
+import UserAPI from '../../data/FirebaseUserAPI';
 function fake1() {
   console.log(1);
 }

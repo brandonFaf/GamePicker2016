@@ -1,0 +1,7 @@
+What I need to do to change environments:
+staging -> prod: change firebaseConfig in index.ios.js to reference one for prod
+prod -> staging: change firebaseConfig in index.ios.js to reference one for staging
+offline->online:
+userActions,
+scoreActions,
+gameActions

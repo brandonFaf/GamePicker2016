@@ -1,9 +1,10 @@
 import * as types from './actionTypes';
 import {Actions, ActionConst} from 'react-native-router-flux';
+import {AsyncStorage} from 'react-native';
 //Offline
-import UserAPI from '../../data/OfflineUserAPI';
+// import UserAPI from '../../data/OfflineUserAPI';
 //Firebase
-// import UserAPI from '../../data/FirebaseUserAPI';
+import UserAPI from '../../data/FirebaseUserAPI';
 
 import {loadPicks, loadYearly} from './gameActions'
 function userLoggedInSuccess(user) {
