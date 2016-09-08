@@ -74,4 +74,11 @@ export default class GameAPI{
       }, 1000)
     });
   }
+  static loadYearly(userId){
+    return new Promise((resolve,reject) => {
+      setTimeout(()=>{
+        resolve({val:()=>Object.assign([],data.yearly[userId])});
+      },1000)
+    });
+  }
 }

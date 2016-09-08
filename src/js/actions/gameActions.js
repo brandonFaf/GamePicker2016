@@ -1,8 +1,8 @@
 import * as types from './actionTypes';
 //Offline
-import GameAPI from '../../data/OfflineGameAPI';
+// import GameAPI from '../../data/OfflineGameAPI';
 //Firebase
-// import GameAPI from '../../data/FirebaseGameAPI';
+import GameAPI from '../../data/FirebaseGameAPI';
 import firebase from 'firebase';
 import {showLoading} from './loadingActions';
 function loadGamesSuccess(games) {
@@ -80,7 +80,7 @@ export function loadPicks(userId) {
 }
 export function loadYearly(userId) {
   return function(dispatch) {
-    return firebase.database().ref(`yearly/${userId}`).once('value').then((snapshot) => {
+    return GameAPI.loadYearly(userId).then((snapshot) => {
       if (snapshot.val()) {
         dispatch(loadYearlySuccess(snapshot.val()));
       }

@@ -1,9 +1,9 @@
 import * as types from './actionTypes';
 import {Actions, ActionConst} from 'react-native-router-flux';
 //Offline
-import UserAPI from '../../data/OfflineUserAPI';
+// import UserAPI from '../../data/OfflineUserAPI';
 //Firebase
-// import UserAPI from '../../data/FirebaseUserAPI';
+import UserAPI from '../../data/FirebaseUserAPI';
 
 import {loadPicks, loadYearly} from './gameActions'
 function userLoggedInSuccess(user) {
@@ -57,6 +57,7 @@ export function loadUser(uid) {
       let userObj = Object.assign(user.val(),{uid})
       dispatch(userLoggedInSuccess(userObj))
       dispatch(loadPicks(uid));
+      dispatch(loadYearly(uid))
       Actions.home(ActionConst.REPLACE)
     })
   }

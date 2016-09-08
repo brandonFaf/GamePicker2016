@@ -1,10 +1,10 @@
 import firebase from 'firebase'
 //Offline
-import GameAPI from '../../data/OfflineGameAPI';
-import UserAPI from '../../data/OfflineUserAPI';
+// import GameAPI from '../../data/OfflineGameAPI';
+// import UserAPI from '../../data/OfflineUserAPI';
 //Firebase
-// import GameAPI from '../../data/FirebaseGameAPI';
-// import UserAPI from '../../data/FirebaseUserAPI';
+import GameAPI from '../../data/FirebaseGameAPI';
+import UserAPI from '../../data/FirebaseUserAPI';
 function fake1() {
   console.log(1);
 }
@@ -43,18 +43,30 @@ export default function getUsersAndWinners() {
       return GameAPI.loadYearPicks()
     }).then((yearSnap) => {
       const yearlyPicks = yearSnap.val();
-      const uids = Object.keys(picks)
+      const uids = Object.keys(users)
       let scoresWeekly = uids.map((uid,i) => {
-        const score =  winners.reduce((total, cur, index) => {
-          return cur == picks[uid][index]? ++total: total
-        },0)
+        let score;
+        if (!winners) {
+          score = users[uid].userName=="SI"? -1: 0;
+        }
+        else{
+           score =  winners.reduce((total, cur, index) => {
+            return cur == picks[uid][index]? ++total: total
+          },0)
+        }
         return {userName:users[uid].userName,score};
       })
       let scoresYearly = uids.map((uid,i) => {
         if (yearlyPicks[uid]) {
-          const score =  winners.reduce((total, cur, index) => {
-            return cur == yearlyPicks[uid][index]? ++total:total
-          },0)
+          let score;
+          if(!winners){
+            score =0;
+          }
+          else {
+            score =  winners.reduce((total, cur, index) => {
+              return cur == yearlyPicks[uid][index]? ++total:total
+            },0)
+          }
           return {userName:users[uid].userName,score};
         }
         return;
