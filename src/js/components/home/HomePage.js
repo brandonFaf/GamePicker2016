@@ -1,12 +1,12 @@
 import React from 'react';
 import{ View, Text, StyleSheet, TouchableHighlight} from 'react-native';
 import {Actions} from 'react-native-router-flux';
-import * as userActions from '../../actions/userActions'
+import * as userActions from '../../actions/userActions';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 class HomePage extends React.Component{
   constructor(props){
-    super(props)
+    super(props);
   }
 
   render() {
@@ -14,12 +14,12 @@ class HomePage extends React.Component{
       <View style={styles.container}>
         <TouchableHighlight
           style={styles.button}
-          onPress = {() => {this.props.userActions.setYearly(false);Actions.weeks()} }>
+          onPress = {() => {this.props.userActions.setYearly(false);Actions.weeks();}}>
           <Text style={styles.buttonText}>Make Picks</Text>
         </TouchableHighlight>
         <TouchableHighlight
           style={styles.button}
-          onPress = {() => {this.props.userActions.setYearly(true);Actions.weeks()} }>
+          onPress = {() => {this.props.userActions.setYearly(true);Actions.weeks();}}>
           <Text style={styles.buttonText}>Make Picks for the Year</Text>
         </TouchableHighlight>
         <TouchableHighlight
@@ -36,16 +36,16 @@ class HomePage extends React.Component{
     );
   }
 }
-export default connect(mapStateToProps,mapActionsToProps)(HomePage)
+export default connect(mapStateToProps,mapActionsToProps)(HomePage);
 function mapStateToProps(state) {
   return{
     userName:state.user.userName
-  }
+  };
 }
 function mapActionsToProps(dispatch) {
   return{
     userActions:bindActionCreators(userActions, dispatch)
-  }
+  };
 }
 const styles = StyleSheet.create({
   container: {

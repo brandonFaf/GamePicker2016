@@ -1,3 +1,5 @@
+
+
 export default TeamImages = {
 	"49ers": require('./images/49ers.png'),
 	"Bengals": require('./images/Bengals.png'),
@@ -32,4 +34,4 @@ export default TeamImages = {
 	"Vikings": require('./images/Vikings.png'),
 	"Browns": require('./images/Browns.png'),
 	"Baltimore": require('./images/Baltimore.png'),
-}
+};

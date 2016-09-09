@@ -15,4 +15,4 @@ export default weeks = [
   {week:14,date:'Dec 8'},
   {week:15,date:'Dec 15'},
   {week:16,date:'Dec 22'},
-  {week:17,date:'Jan 29'}, ]
+  {week:17,date:'Jan 29'}, ];

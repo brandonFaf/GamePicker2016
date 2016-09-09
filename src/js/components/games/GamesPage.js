@@ -19,7 +19,7 @@ class GamesPage extends React.Component{
       <View style = {[styles.container, this.props.adminActive && styles.adminActive, this.props.isYearly && styles.isYearly]}>
         <GamesList picks={this.props.picks} games={this.dataSource.cloneWithRowsAndSections(this.props.games)}/>
       </View>
-    )
+    );
   }
 }
 
@@ -31,21 +31,21 @@ function getGamesByWeek(games, week) {
   gamesToDisplay.forEach((game) => {
       const key = game.day + " " + game.date + " " +game.time;
       if (!timeMap[key]) {
-          timeMap[key] = []
+          timeMap[key] = [];
       }
       timeMap[key].push(game);
-  })
+  });
   return timeMap;
 }
 
 function mapStateToProps(state, ownProps) {
-  const picks = state.user.isYearly?state.yearly:state.picks
+  const picks = state.user.isYearly?state.yearly:state.picks;
   return {
     games:getGamesByWeek(state.games, ownProps.week),
     picks,
     adminActive:state.user.adminActive,
     isYearly:state.user.isYearly
-  }
+  };
 }
 export default connect(mapStateToProps)(GamesPage);
 

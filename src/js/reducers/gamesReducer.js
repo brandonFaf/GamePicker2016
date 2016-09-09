@@ -14,7 +14,7 @@ export default function gamesReducer(state = [], action) {
     case types.SAVE_WINNER:
       return sortById([...state.filter( (game) => {
         return game.id !== action.game.id;
-      }), Object.assign({}, action.game)])
+      }), Object.assign({}, action.game)]);
     default:
       return state;
   }

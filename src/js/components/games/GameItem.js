@@ -8,11 +8,11 @@ import {
 import {Actions} from 'react-native-router-flux';
 
 export default GameItem = ({game, pick}) => {
-  const correct = pick == game.winner
+  const correct = pick == game.winner;
   return (
     <TouchableHighlight
       onPress={()=> Actions.select({id:game.id})}
-      underlayColor = '#ddd'>
+      underlayColor = "#ddd">
       <View style ={styles.row}>
         <Text style={{fontSize:18}}>{game.awayTeam} @ {game.homeTeam} </Text>
         <View style={styles.rowText}>
@@ -20,10 +20,10 @@ export default GameItem = ({game, pick}) => {
         </View>
       </View>
     </TouchableHighlight>
-  )
-}
+  );
+};
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   row:{
     flex:1,
     flexDirection:'row',

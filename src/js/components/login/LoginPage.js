@@ -1,6 +1,6 @@
 import React from 'react';
 import{View,Text, TextInput, StyleSheet, TouchableHighlight,AsyncStorage} from 'react-native';
-import {Actions} from 'react-native-router-flux'
+import {Actions} from 'react-native-router-flux';
 import SocialAuth from 'react-native-social-auth';
 import firebase from 'firebase';
 import {bindActionCreators} from 'redux';
@@ -13,7 +13,7 @@ import LoadingOverlay from '../common/loading';
 class LoginPage extends React.Component{
   constructor(props){
     super(props);
-    this.state = {loginStage:true}
+    this.state = {loginStage:true};
     this.chooseProvider = this.chooseProvider.bind(this);
     this.loginTwitter = this.loginTwitter.bind(this);
     this.loginFacebook = this.loginFacebook.bind(this);
@@ -22,26 +22,25 @@ class LoginPage extends React.Component{
 
   chooseProvider(provider){
     this.setState({provider});
-    this.setState({loginStage:false})
+    this.setState({loginStage:false});
   }
 
   alertError(err){
-    console.log(err);
+    // console.log(err);
   }
 
   loginTwitter(userName){
     SocialAuth.getTwitterSystemAccounts()
     .then((accounts) => {
-      console.log(accounts)
-      return SocialAuth.getTwitterCredentials(accounts[0].userName)
+      return SocialAuth.getTwitterCredentials(accounts[0].userName);
     })
     .then((credentials) => {
       credentials.userName = userName;
       this.setState({credentials});
       const credential = firebase.auth.TwitterAuthProvider.credential(credentials.oauthToken, credentials.oauthTokenSecret);
-      this.loginUser(credential,userName)
+      this.loginUser(credential,userName);
     })
-    .catch(this.alertError)
+    .catch(this.alertError);
   }
 
   loginFacebook(userName){
@@ -51,20 +50,20 @@ class LoginPage extends React.Component{
       credentials.userName = userName;
       this.setState({credentials});
       const credential = firebase.auth.FacebookAuthProvider.credential(credentials.accessToken);
-      this.loginUser(credential,userName)
+      this.loginUser(credential,userName);
     })
-    .catch(this.alertError)
+    .catch(this.alertError);
   }
 
   loginUser(credential, userName){
     this.props.actions.loginUser(credential,userName).then((uid) =>{
-      return AsyncStorage.setItem('user', JSON.stringify({uid, userName}))
+      return AsyncStorage.setItem('user', JSON.stringify({uid, userName}));
     })
     .then(() => {
       this.props.loadingActions.hideLoading();
       Actions.home();
     })
-    .catch(this.alertError)
+    .catch(this.alertError);
   }
 
   saveUser(userName){
@@ -73,7 +72,7 @@ class LoginPage extends React.Component{
       this.loginTwitter(userName);
     }
     else{
-      this.loginFacebook(userName)
+      this.loginFacebook(userName);
     }
   }
   render(){
@@ -90,7 +89,7 @@ class LoginPage extends React.Component{
         {this.props.loading && <LoadingOverlay/> }
       </View>
 
-    )
+    );
   }
 }
 function mapStateToProps(state) {

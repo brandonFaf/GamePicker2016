@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, TouchableHighlight, Text, StyleSheet} from 'react-native'
+import {View, TouchableHighlight, Text, StyleSheet} from 'react-native';
 
 export default LoginButtons = ({chooseProvider}) => {
   return (
@@ -18,7 +18,7 @@ export default LoginButtons = ({chooseProvider}) => {
       </TouchableHighlight>
     </View>
   );
-}
+};
 const styles = StyleSheet.create({
   button:{
     height: 50,

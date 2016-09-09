@@ -10,7 +10,7 @@ export default Week = ({week}) => {
   return(
     <TouchableHighlight
         onPress={()=>Actions.games({week:week.week})}
-        underlayColor = '#ddd'>
+        underlayColor = "#ddd">
         <View style ={styles.row}>
           <Text style={{fontSize:18}}>Week {week.week}</Text>
           <View style ={styles.rowText}>
@@ -18,10 +18,10 @@ export default Week = ({week}) => {
            </View>
          </View>
       </TouchableHighlight>
-  )
-}
+  );
+};
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   row:{
     flex:1,
     flexDirection:'row',

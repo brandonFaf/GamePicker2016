@@ -41,20 +41,20 @@ class PickGamePage extends React.Component{
 
   savePick(teamName){
     if (this.props.user.adminActive) {
-      this.state.game.winner = teamName;
+      this.setState({game:Object.assign(this.state.game,{winner:teamName})});
     }
     else{
       if(!this.isValid(this.state.game)){
-        this.setState({error: "Oops You tried to make/change your pick too late"})
+        this.setState({error: "Oops You tried to make/change your pick too late"});
         return;
-      };
+      }
       if (!this.props.user.isYearly) {
         if (teamName == this.state.game.awayTeam) {
-          this.addPick(this.state.game, 'pickedAwayTeam')
+          this.addPick(this.state.game, 'pickedAwayTeam');
           this.removePick(this.state.game,'pickedHomeTeam');
         }
         else{
-          this.addPick(this.state.game, 'pickedHomeTeam')
+          this.addPick(this.state.game, 'pickedHomeTeam');
           this.removePick(this.state.game,'pickedAwayTeam');
         }
       }
@@ -76,10 +76,10 @@ class PickGamePage extends React.Component{
           <Team teamName={game.homeTeam} savePick={this.savePick} userName = {user.userName} picks = {game.pickedHomeTeam} selected={picks[game.id]==game.homeTeam}/>
         </View>
         <View style={{flex:2}}>
-        {loading && <ActivityIndicator animating={true} color={'#222'} size={'large'}/>}
+        {loading && <ActivityIndicator animating color={'#222'} size={'large'}/>}
         </View>
       </View>
-    )
+    );
   }
 }
 
@@ -95,7 +95,7 @@ function getGameById(games, id) {
 
 function mapStateToProps(state, ownProps) {
   const game = getGameById(state.games, ownProps.id);
-  const picks = state.user.isYearly?state.yearly:state.picks
+  const picks = state.user.isYearly?state.yearly:state.picks;
   return {
     game,
     user: state.user,

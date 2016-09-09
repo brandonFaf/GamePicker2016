@@ -1,10 +1,10 @@
 import React from 'react';
-import {View, TouchableHighlight, Text, TextInput, StyleSheet} from 'react-native'
+import {View, TouchableHighlight, Text, TextInput, StyleSheet} from 'react-native';
 
 export default class UserNameInput extends React.Component {
   constructor(props){
     super(props);
-    this.state = {missingName:false, nameAlreadyUsed:false}
+    this.state = {missingName:false, nameAlreadyUsed:false};
     this.validateName = this.validateName.bind(this);
   }
 
@@ -12,7 +12,7 @@ export default class UserNameInput extends React.Component {
     if (!this.username) {
       return this.setState({missingName:true});
     }
-    this.props.next(this.username)
+    this.props.next(this.username);
   }
   render(){
     return(
@@ -27,7 +27,7 @@ export default class UserNameInput extends React.Component {
           <Text style = {styles.buttonText}> Continue </Text>
         </TouchableHighlight>
       </View>
-    )
+    );
   }
 }
 const styles = StyleSheet.create({

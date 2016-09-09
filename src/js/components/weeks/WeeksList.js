@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import{
   ListView,
 } from 'react-native';
@@ -10,8 +10,7 @@ export default WeeksList  =  ({weeks}) => {
     <ListView
       dataSource = {weeks}
       renderRow = {(week) => {
-        return <WeekItem week={week}/>
+        return <WeekItem week={week}/>;
       }}
-    >
-    </ListView>)
+    />);
 };

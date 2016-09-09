@@ -10,7 +10,7 @@ import WeeksList from './WeeksList';
 import Weeks from '../../../data/weeks.js';
 export default class WeeksPage extends React.Component{
   constructor(){
-    super()
+    super();
     this.dataSource = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 != r2
     });
@@ -18,9 +18,9 @@ export default class WeeksPage extends React.Component{
   render(){
     return(
       <View style = {styles.container}>
-        <WeeksList weeks={this.dataSource.cloneWithRows(weeks)}/>
+        <WeeksList weeks={this.dataSource.cloneWithRows(Weeks)}/>
       </View>
-    )
+    );
   }
 }
 const styles = StyleSheet.create({

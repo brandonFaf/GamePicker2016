@@ -6,22 +6,22 @@ import GameAPI from '../../data/FirebaseGameAPI';
 import firebase from 'firebase';
 import {showLoading} from './loadingActions';
 function loadGamesSuccess(games) {
-  return {type:types.LOAD_GAMES_SUCCESS, games}
+  return {type:types.LOAD_GAMES_SUCCESS, games};
 }
 function savePickSuccess(game, teamName) {
-  return {type:types.SAVE_PICK, game, teamName}
+  return {type:types.SAVE_PICK, game, teamName};
 }
 function saveWinnerSuccess(game) {
-  return {type:types.SAVE_WINNER, game}
+  return {type:types.SAVE_WINNER, game};
 }
 function saveYearlySuccess(game,teamName) {
-  return {type:types.SAVE_YEARLY, game, teamName}
+  return {type:types.SAVE_YEARLY, game, teamName};
 }
 function loadPicksSuccess(picks) {
-  return {type:types.LOAD_PICKS_SUCCESS, picks}
+  return {type:types.LOAD_PICKS_SUCCESS, picks};
 }
 function loadYearlySuccess(picks) {
-  return {type:types.LOAD_YEARLY_SUCCESS, picks}
+  return {type:types.LOAD_YEARLY_SUCCESS, picks};
 }
 export function loadGames(){
   return function (dispatch) {
@@ -32,16 +32,16 @@ export function loadGames(){
       //give the game an id based on the key it has. Have to do it with keys because might not always get an array back.
       let games = snapshot.val().map((n,i) => {
         return Object.assign(n,{id: keys[i]});
-      })
-      dispatch(loadGamesSuccess(games))
+      });
+      dispatch(loadGamesSuccess(games));
     }).catch( (err) => {
       throw(err);
-    })
-  }
+    });
+  };
 }
 export function savePick(game, teamName) {
   return (dispatch, getState) => {
-    dispatch(showLoading())
+    dispatch(showLoading());
     let updates = {};
     const {user} = getState();
     if (user.adminActive) {
@@ -56,18 +56,18 @@ export function savePick(game, teamName) {
     updates[`games/${game.id}`] = game;
     return GameAPI.savePick(updates).then(() => {
       if (user.adminActive) {
-        dispatch(saveWinnerSuccess(game))
+        dispatch(saveWinnerSuccess(game));
       }
       else if (user.isYearly) {
-        dispatch(saveYearlySuccess(game,teamName))
+        dispatch(saveYearlySuccess(game,teamName));
       }
       else{
-        dispatch(savePickSuccess(game, teamName))
+        dispatch(savePickSuccess(game, teamName));
       }
     }).catch( (err) => {
       throw err;
-    })
-  }
+    });
+  };
 }
 export function loadPicks(userId) {
   return function(dispatch) {
@@ -75,8 +75,8 @@ export function loadPicks(userId) {
       if (snapshot.val()) {
         dispatch(loadPicksSuccess(snapshot.val()));
       }
-    })
-  }
+    });
+  };
 }
 export function loadYearly(userId) {
   return function(dispatch) {
@@ -84,6 +84,6 @@ export function loadYearly(userId) {
       if (snapshot.val()) {
         dispatch(loadYearlySuccess(snapshot.val()));
       }
-    })
-  }
+    });
+  };
 }

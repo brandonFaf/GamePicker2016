@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet, TouchableHighlight} from 'react-native';
 import {connect} from 'react-redux';
 import * as userActions from '../../actions/userActions';
-import {bindActionCreators} from 'redux'
+import {bindActionCreators} from 'redux';
 const SettingsPage = ({actions, user}) =>{
   return (
     <View style={styles.container}>
@@ -19,12 +19,12 @@ const SettingsPage = ({actions, user}) =>{
       </TouchableHighlight> }
     </View>
   );
-}
+};
 function mapStateToProps(state) {
-  return {user:state.user}
+  return {user:state.user};
 }
 function mapActionsToProps(dispatch) {
-  return {actions: bindActionCreators(userActions,dispatch)}
+  return {actions: bindActionCreators(userActions,dispatch)};
 }
 export default connect(mapStateToProps,mapActionsToProps)(SettingsPage);
 

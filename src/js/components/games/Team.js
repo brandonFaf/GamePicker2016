@@ -13,8 +13,8 @@ export default TeamImage = ({teamName, savePick, picks, userName, selected}) => 
     <View style = {styles.teamContainer}>
       <Text style = {styles.teamText}>{teamName}</Text>
       <TouchableHighlight
-        onPress= {()=>{savePick(teamName)}}
-        underlayColor = '#F5FCFF'
+        onPress= {()=>{savePick(teamName);}}
+        underlayColor = "#F5FCFF"
         style={[styles.border,selected && styles.selected]}>
         <Image
           source = {TeamImages[teamName]}
@@ -22,13 +22,13 @@ export default TeamImage = ({teamName, savePick, picks, userName, selected}) => 
       </TouchableHighlight>
       {picks && picks.map((user, index) => {
         if(user != userName)
-          return  <Text key={index}>{user}</Text>
+          return  <Text key={index}>{user}</Text>;
       })}
     </View>
-  )
-}
+  );
+};
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   teamText:{
     paddingBottom:10,
     fontSize:20

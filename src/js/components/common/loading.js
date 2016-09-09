@@ -5,10 +5,10 @@ export default LoadingOverlay = () => {
   return(
     <View style={styles.loading}>
       <Text style={styles.loadingText}>Loading</Text>
-      <ActivityIndicator animating={true} color={'#FFF'} size={'large'}/>
+      <ActivityIndicator animating color={'#FFF'} size={'large'}/>
     </View>
-  )
-}
+  );
+};
 const styles = StyleSheet.create({
   loading:{
     flex:1,
@@ -28,4 +28,4 @@ const styles = StyleSheet.create({
     marginBottom:20,
     opacity:1
   },
-})
+});
