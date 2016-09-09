@@ -59,8 +59,8 @@ export function loadUser(uid) {
       let userObj = Object.assign(user.val(),{uid});
       dispatch(userLoggedInSuccess(userObj));
       dispatch(loadPicks(uid));
-      dispatch(loadYearly(uid))
-      Actions.home(ActionConst.REPLACE)
-    })
-  }
+      dispatch(loadYearly(uid));
+      Actions.home(ActionConst.REPLACE);
+    });
+  };
 }

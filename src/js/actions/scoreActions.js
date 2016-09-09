@@ -22,7 +22,7 @@ export default function getUsersAndWinners() {
       return GameAPI.loadYearPicks();
     }).then((yearSnap) => {
       const yearlyPicks = yearSnap.val();
-      const uids = Object.keys(users)
+      const uids = Object.keys(users);
       let scoresWeekly = uids.map((uid,i) => {
         let score;
         if (!winners) {
@@ -30,8 +30,8 @@ export default function getUsersAndWinners() {
         }
         else{
            score =  winners.reduce((total, cur, index) => {
-            return cur == picks[uid][index]? ++total: total
-          },0)
+            return cur == picks[uid][index]? ++total: total;
+          },0);
         }
 
         return {userName:users[uid].userName,score};
@@ -44,8 +44,8 @@ export default function getUsersAndWinners() {
           }
           else {
             score =  winners.reduce((total, cur, index) => {
-              return cur == yearlyPicks[uid][index]? ++total:total
-            },0)
+              return cur == yearlyPicks[uid][index]? ++total:total;
+            },0);
           }
 
           return {userName:users[uid].userName,score};

@@ -10,7 +10,7 @@ export default class GameAPI{
     return firebase.database().ref(`picks/${userId}`).once('value');
   }
   static loadYearPicks(){
-    return firebase.database().ref('yearly').once('value')
+    return firebase.database().ref('yearly').once('value');
   }
   static loadPicks(){
     return firebase.database().ref('picks').once('value');
@@ -18,10 +18,7 @@ export default class GameAPI{
   static loadWinners(){
     return firebase.database().ref('winners').once('value');
   }
-  static loadYearPicks(){
-    return firebase.database().ref('yearly').once('value');
-  }
   static loadYearly(userId){
-    return firebase.database().ref(`yearly/${userId}`).once('value')
+    return firebase.database().ref(`yearly/${userId}`).once('value');
   }
 }

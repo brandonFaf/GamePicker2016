@@ -78,7 +78,7 @@ export default class GameAPI{
     return new Promise((resolve,reject) => {
       setTimeout(()=>{
         resolve({val:()=>Object.assign([],data.yearly[userId])});
-      },1000)
+      },1000);
     });
   }
 }

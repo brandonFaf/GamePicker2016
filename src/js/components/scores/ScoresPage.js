@@ -18,7 +18,7 @@ export default class ScoresPage extends React.Component{
       <View style = {styles.container}>
         <Text style = {styles.title}>Leaderboard</Text>
         {this.state.scores.map(function(n,i,){
-          return n.userName != "SI" && <View style = {styles.textView}key = {n.userName} ><Text  style = {[styles.text,n.userName == userName && styles.selected]}>{i+1}. {n.userName}: {n.score}</Text></View>
+          return n.userName != "SI" && <View style = {styles.textView}key = {n.userName} ><Text  style = {[styles.text,n.userName == userName && styles.selected]}>{i+1}. {n.userName}: {n.score}</Text></View>;
         })}
       </View>
       <View style = {styles.differentContainer}>
