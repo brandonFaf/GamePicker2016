@@ -34,7 +34,7 @@ class PickGamePage extends React.Component{
   isValid(game){
     const format = "MMMM D h:mm a";
     const now = moment(moment(), format);
-    const gameTime = this.props.user.isYearly?moment("September 8 8:30pm", format):moment(game.date + " " + game.time, format);
+    const gameTime = this.props.user.isYearly?moment("September 11 1:00pm", format):moment(game.date + " " + game.time, format);
 
     return now.isBefore(gameTime);
   }
