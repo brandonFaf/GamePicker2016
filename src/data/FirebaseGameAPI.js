@@ -12,6 +12,9 @@ export default class GameAPI{
   static loadYearPicks(){
     return firebase.database().ref('yearly').once('value');
   }
+  static loadUserRecords(userId){
+    return firebase.database().ref(`records/${userId}`).once('value');
+  }
   static loadPicks(){
     return firebase.database().ref('picks').once('value');
   }

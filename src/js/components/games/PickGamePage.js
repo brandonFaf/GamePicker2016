@@ -40,6 +40,7 @@ class PickGamePage extends React.Component{
   }
 
   savePick(teamName){
+    let winningTeam, losingTeam;
     if (this.props.user.adminActive) {
       this.setState({game:Object.assign(this.state.game,{winner:teamName})});
     }
@@ -48,22 +49,28 @@ class PickGamePage extends React.Component{
         this.setState({error: "Oops You tried to make/change your pick too late"});
         return;
       }
-      if (!this.props.user.isYearly) {
-        if (teamName == this.state.game.awayTeam) {
+      if (teamName == this.state.game.awayTeam) {
+        winningTeam =this.state.game.awayTeam;
+        losingTeam = this.state.game.homeTeam;
+        if (!this.props.user.isYearly) {
           this.addPick(this.state.game, 'pickedAwayTeam');
           this.removePick(this.state.game,'pickedHomeTeam');
         }
-        else{
+      }
+      else{
+        losingTeam = this.state.game.awayTeam;
+        winningTeam=this.state.game.homeTeam;
+        if (!this.props.user.isYearly) {
           this.addPick(this.state.game, 'pickedHomeTeam');
           this.removePick(this.state.game,'pickedAwayTeam');
         }
       }
     }
-    this.props.actions.savePick(this.state.game, teamName );
+    this.props.actions.savePick(this.state.game, winningTeam, losingTeam );
   }
 
   render(){
-    const {game,user,picks,loading} = this.props;
+    const {game,user,picks,loading,awayRecord,homeRecord} = this.props;
     return(
       <View style = {[styles.outterContainer, user.adminActive && styles.adminActive]}>
          <View style = {styles.errorView}>
@@ -71,9 +78,9 @@ class PickGamePage extends React.Component{
          {game.winner && <Text style = {[styles.topText, styles.winnerText]}>Winner: {game.winner}</Text>}
         </View>
         <View style = {styles.container}>
-          <Team teamName={game.awayTeam} savePick={this.savePick} userName = {user.userName} picks = {game.pickedAwayTeam} selected={picks[game.id]==game.awayTeam}/>
+          <Team teamName={game.awayTeam} record={awayRecord} savePick={this.savePick} userName = {user.userName} picks = {game.pickedAwayTeam} selected={picks[game.id]==game.awayTeam}/>
           <Text style = {{fontSize:60, padding:10, top:10}}>@</Text>
-          <Team teamName={game.homeTeam} savePick={this.savePick} userName = {user.userName} picks = {game.pickedHomeTeam} selected={picks[game.id]==game.homeTeam}/>
+          <Team teamName={game.homeTeam} record={homeRecord} savePick={this.savePick} userName = {user.userName} picks = {game.pickedHomeTeam} selected={picks[game.id]==game.homeTeam}/>
         </View>
         <View style={{flex:2}}>
         {loading && <ActivityIndicator animating color={'#222'} size={'large'}/>}
@@ -92,11 +99,25 @@ function getGameById(games, id) {
   }
   return null;
 }
-
+function getRecordsForTeams(teams, game) {
+  teams = [teams[game.awayTeam], teams[game.homeTeam]];
+  return teams.map((results)=>{
+    if (!results) {
+      return {wins:0, losses:0};
+    }
+    results = Object.keys(results).reduce((total, key) => {total[key] = results[key]; return total;},[]);
+      return results.reduce((total,cur)=>{
+        return cur ? {wins:++total.wins,losses:total.losses}:{wins:total.wins,losses:++total.losses};
+      },{wins:0,losses:0});
+    });
+}
 function mapStateToProps(state, ownProps) {
   const game = getGameById(state.games, ownProps.id);
   const picks = state.user.isYearly?state.yearly:state.picks;
+  const [awayRecord,homeRecord] = getRecordsForTeams(state.teams, game);
   return {
+    awayRecord,
+    homeRecord,
     game,
     user: state.user,
     picks,

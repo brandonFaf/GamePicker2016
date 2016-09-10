@@ -14,14 +14,17 @@ function savePickSuccess(game, teamName) {
 function saveWinnerSuccess(game) {
   return {type:types.SAVE_WINNER, game};
 }
-function saveYearlySuccess(game,teamName) {
-  return {type:types.SAVE_YEARLY, game, teamName};
+function saveYearlySuccess(game,winningTeam, losingTeam) {
+  return {type:types.SAVE_YEARLY, game, winningTeam, losingTeam};
 }
 function loadPicksSuccess(picks) {
   return {type:types.LOAD_PICKS_SUCCESS, picks};
 }
 function loadYearlySuccess(picks) {
   return {type:types.LOAD_YEARLY_SUCCESS, picks};
+}
+function loadRecordsSuccess(teams) {
+  return {type:types.LOAD_RECORDS_SUCCESS, teams};
 }
 export function loadGames(){
   return function (dispatch) {
@@ -39,19 +42,23 @@ export function loadGames(){
     });
   };
 }
-export function savePick(game, teamName) {
+export function savePick(game, winningTeam, losingTeam) {
   return (dispatch, getState) => {
     dispatch(showLoading());
     let updates = {};
     const {user} = getState();
     if (user.adminActive) {
-      updates[`winners/${game.id}`] = teamName;
+      updates[`winners/${game.id}`] = winningTeam;
+      updates[`records/result/${winningTeam}/${game.week}`] = true;
+      updates[`records/result/${losingTeam}/${game.week}`] = false;
     }
     else if (user.isYearly) {
-      updates[`yearly/${user.id}/${game.id}`] =teamName;
+      updates[`yearly/${user.id}/${game.id}`] =winningTeam;
+      updates[`records/${user.id}/${winningTeam}/${game.week}`] = true;
+      updates[`records/${user.id}/${losingTeam}/${game.week}`] = false;
     }
     else{
-      updates[`picks/${user.id}/${game.id}`] = teamName;
+      updates[`picks/${user.id}/${game.id}`] = winningTeam;
     }
     updates[`games/${game.id}`] = game;
     return GameAPI.savePick(updates).then(() => {
@@ -59,10 +66,10 @@ export function savePick(game, teamName) {
         dispatch(saveWinnerSuccess(game));
       }
       else if (user.isYearly) {
-        dispatch(saveYearlySuccess(game,teamName));
+        dispatch(saveYearlySuccess(game,winningTeam, losingTeam));
       }
       else{
-        dispatch(savePickSuccess(game, teamName));
+        dispatch(savePickSuccess(game, winningTeam));
       }
     }).catch( (err) => {
       throw err;
@@ -78,11 +85,21 @@ export function loadPicks(userId) {
     });
   };
 }
+
 export function loadYearly(userId) {
   return function(dispatch) {
     return GameAPI.loadYearly(userId).then((snapshot) => {
       if (snapshot.val()) {
         dispatch(loadYearlySuccess(snapshot.val()));
+      }
+    });
+  };
+}
+export function loadRecords(userId) {
+  return function(dispatch) {
+    return GameAPI.loadUserRecords(userId).then((snapshot) => {
+      if (snapshot.val()) {
+        dispatch(loadRecordsSuccess(snapshot.val()));
       }
     });
   };

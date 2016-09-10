@@ -6,7 +6,7 @@ export default function yearlyReducer(state = {}, action) {
       return action.picks;
     case types.SAVE_YEARLY:{
       let pick = {};
-      pick[action.game.id] = action.teamName;
+      pick[action.game.id] = action.winningTeam;
       return Object.assign({}, state, pick);
     }
     default:

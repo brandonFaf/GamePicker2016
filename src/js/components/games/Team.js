@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import TeamImages from './TeamImages';
-export default TeamImage = ({teamName, savePick, picks, userName, selected}) => {
+export default TeamImage = ({teamName, record, savePick, picks, userName, selected}) => {
   return (
     <View style = {styles.teamContainer}>
       <Text style = {styles.teamText}>{teamName}</Text>
@@ -20,6 +20,7 @@ export default TeamImage = ({teamName, savePick, picks, userName, selected}) => 
           source = {TeamImages[teamName]}
           style = {styles.pic} />
       </TouchableHighlight>
+      <Text>{record.wins} - {record.losses}</Text>
       {picks && picks.map((user, index) => {
         if(user != userName)
           return  <Text key={index}>{user}</Text>;
