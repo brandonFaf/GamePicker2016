@@ -4,8 +4,8 @@ import user from './UserReducer';
 import loading from './loadingReducer';
 import picks from './picksReducer';
 import yearly from './yearlyReducer';
-import teams from './teamsReducer';
-
+import yearlyRecords from './yearlyRecordsReducer';
+import weeklyRecords from './weeklyRecordsReducer';
 export default rootReducer = combineReducers(
   {
     games,
@@ -13,6 +13,7 @@ export default rootReducer = combineReducers(
     loading,
     picks,
     yearly,
-    teams
+    yearlyRecords,
+    weeklyRecords
   }
 );

@@ -7,7 +7,7 @@ import {AsyncStorage} from 'react-native';
 //Firebase
 import UserAPI from '../../data/FirebaseUserAPI';
 
-import {loadPicks, loadYearly, loadRecords} from './gameActions';
+import {loadPicks, loadYearly, loadYearlyRecords} from './gameActions';
 function userLoggedInSuccess(user) {
   return {type: types.LOG_IN_SUCCESS, user};
 }
@@ -60,7 +60,7 @@ export function loadUser(uid) {
       dispatch(userLoggedInSuccess(userObj));
       dispatch(loadPicks(uid));
       dispatch(loadYearly(uid));
-      dispatch(loadRecords(uid));
+      dispatch(loadYearlyRecords(uid));
       Actions.home(ActionConst.REPLACE);
     });
   };

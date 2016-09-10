@@ -9,13 +9,12 @@ import { AppRegistry, AsyncStorage} from 'react-native';
 import App from './src/js/components/App';
 import configureStore from './src/js/store/configureStore';
 import {Provider} from 'react-redux';
-import {loadGames, loadPicks} from './src/js/actions/gameActions';
-import {noUser, loadUser} from './src/js/actions/userActions'
+import {loadGames, loadWeeklyRecords} from './src/js/actions/gameActions';
+import {noUser, loadUser} from './src/js/actions/userActions';
 import firebase from 'firebase';
-import firebaseConfig from './src/data/firebaseConfig'
-import codePush from 'react-native-code-push'
+import firebaseConfig from './src/data/firebaseConfig';
+import codePush from 'react-native-code-push';
 const store = configureStore({loading:true});
-console.log(firebaseConfig);
 firebase.initializeApp(firebaseConfig);
 // AsyncStorage.clear()
 firebase.auth().onAuthStateChanged(function(user) {
@@ -23,10 +22,11 @@ firebase.auth().onAuthStateChanged(function(user) {
     console.log("user logged in");
 
     store.dispatch(loadGames());
-    store.dispatch(loadUser(user.uid))
+    store.dispatch(loadWeeklyRecords());
+    store.dispatch(loadUser(user.uid));
     } else {
     console.log("no user");
-    store.dispatch(noUser())
+    store.dispatch(noUser());
   }
 });
 class GamePicker2016 extends Component {

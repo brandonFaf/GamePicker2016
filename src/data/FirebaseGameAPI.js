@@ -15,6 +15,9 @@ export default class GameAPI{
   static loadUserRecords(userId){
     return firebase.database().ref(`records/${userId}`).once('value');
   }
+  static loadWeeklyRecords(){
+    return firebase.database().ref('records/result').once('value');
+  }
   static loadPicks(){
     return firebase.database().ref('picks').once('value');
   }

@@ -42,6 +42,8 @@ class PickGamePage extends React.Component{
   savePick(teamName){
     let winningTeam, losingTeam;
     if (this.props.user.adminActive) {
+      winningTeam = teamName;
+      losingTeam = teamName == this.state.game.awayTeam? this.state.game.homeTeam: this.state.game.awayTeam;
       this.setState({game:Object.assign(this.state.game,{winner:teamName})});
     }
     else{
@@ -114,7 +116,7 @@ function getRecordsForTeams(teams, game) {
 function mapStateToProps(state, ownProps) {
   const game = getGameById(state.games, ownProps.id);
   const picks = state.user.isYearly?state.yearly:state.picks;
-  const [awayRecord,homeRecord] = getRecordsForTeams(state.teams, game);
+  const [awayRecord,homeRecord] = state.user.isYearly?getRecordsForTeams(state.yearlyRecords, game):getRecordsForTeams(state.weeklyRecords, game);
   return {
     awayRecord,
     homeRecord,

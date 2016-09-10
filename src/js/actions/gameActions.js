@@ -11,8 +11,8 @@ function loadGamesSuccess(games) {
 function savePickSuccess(game, teamName) {
   return {type:types.SAVE_PICK, game, teamName};
 }
-function saveWinnerSuccess(game) {
-  return {type:types.SAVE_WINNER, game};
+function saveWinnerSuccess(game, winningTeam, losingTeam) {
+  return {type:types.SAVE_WINNER, game, winningTeam, losingTeam};
 }
 function saveYearlySuccess(game,winningTeam, losingTeam) {
   return {type:types.SAVE_YEARLY, game, winningTeam, losingTeam};
@@ -23,8 +23,11 @@ function loadPicksSuccess(picks) {
 function loadYearlySuccess(picks) {
   return {type:types.LOAD_YEARLY_SUCCESS, picks};
 }
-function loadRecordsSuccess(teams) {
-  return {type:types.LOAD_RECORDS_SUCCESS, teams};
+function loadYearlyRecordsSuccess(teams) {
+  return {type:types.LOAD_YEARLY_RECORDS_SUCCESS, teams};
+}
+function loadWeeklyRecordsSuccess(teams) {
+  return {type:types.LOAD_WEEKLY_RECORDS_SUCCESS, teams};
 }
 export function loadGames(){
   return function (dispatch) {
@@ -63,7 +66,7 @@ export function savePick(game, winningTeam, losingTeam) {
     updates[`games/${game.id}`] = game;
     return GameAPI.savePick(updates).then(() => {
       if (user.adminActive) {
-        dispatch(saveWinnerSuccess(game));
+        dispatch(saveWinnerSuccess(game, winningTeam, losingTeam));
       }
       else if (user.isYearly) {
         dispatch(saveYearlySuccess(game,winningTeam, losingTeam));
@@ -95,11 +98,20 @@ export function loadYearly(userId) {
     });
   };
 }
-export function loadRecords(userId) {
+export function loadYearlyRecords(userId) {
   return function(dispatch) {
     return GameAPI.loadUserRecords(userId).then((snapshot) => {
       if (snapshot.val()) {
-        dispatch(loadRecordsSuccess(snapshot.val()));
+        dispatch(loadYearlyRecordsSuccess(snapshot.val()));
+      }
+    });
+  };
+}
+export function loadWeeklyRecords() {
+  return function(dispatch) {
+    return GameAPI.loadWeeklyRecords().then((snapshot) => {
+      if (snapshot.val()) {
+        dispatch(loadWeeklyRecordsSuccess(snapshot.val()));
       }
     });
   };

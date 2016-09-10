@@ -1,8 +1,8 @@
 import * as types from '../actions/actionTypes.js';
 
-export default function teamsReducer(state = {}, action) {
+export default function yearlyRecordsReducer(state = {}, action) {
  switch (action.type) {
-   case types.LOAD_RECORDS_SUCCESS:
+   case types.LOAD_YEARLY_RECORDS_SUCCESS:
      return action.teams;
   case types.SAVE_YEARLY:{
     let winningResults = Object.assign([],state[action.winningTeam]) ;
