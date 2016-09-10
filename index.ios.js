@@ -13,9 +13,9 @@ import {loadGames, loadPicks} from './src/js/actions/gameActions';
 import {noUser, loadUser} from './src/js/actions/userActions'
 import firebase from 'firebase';
 import firebaseConfig from './src/data/firebaseConfig'
-// import firebaseConfig from './src/data/firebaseConfigStaging.js'
 import codePush from 'react-native-code-push'
 const store = configureStore({loading:true});
+console.log(firebaseConfig);
 firebase.initializeApp(firebaseConfig);
 // AsyncStorage.clear()
 firebase.auth().onAuthStateChanged(function(user) {

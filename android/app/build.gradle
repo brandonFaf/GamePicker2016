@@ -127,6 +127,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-config')
     compile project(':react-native-code-push')
     compile project(':react-native-social-auth')
     compile fileTree(dir: "libs", include: ["*.jar"])
