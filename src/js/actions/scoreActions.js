@@ -25,8 +25,8 @@ export default function getUsersAndWinners() {
       const uids = Object.keys(users);
       let scoresWeekly = uids.map((uid,i) => {
         let score;
-        if (!winners) {
-          score = users[uid].userName=="SI"? -1: 0;
+        if (users[uid].userName=="SI") {
+          score =  -1;
         }
         else{
            score =  winners.reduce((total, cur, index) => {
