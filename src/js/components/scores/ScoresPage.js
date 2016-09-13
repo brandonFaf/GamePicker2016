@@ -35,14 +35,14 @@ export default class ScoresPage extends React.Component{
 
 const styles = StyleSheet.create({
     container: {
-      flex: 2,
+      flex: 3,
       justifyContent: 'flex-start',
       top:60,
     },
     differentContainer: {
       flex: 1,
       justifyContent: 'center',
-      top:60,
+      top:120,
       height:300,
     },
   title: {
