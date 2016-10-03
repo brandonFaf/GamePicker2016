@@ -17,7 +17,10 @@ class PickGamePage extends React.Component{
     if (!game[array]) {
       game[array] = [];
     }
-    game[array].push(this.props.user.userName);
+    const userIndex = game[array].indexOf(this.props.user.userName);
+    if (userIndex < 0){
+      game[array].push(this.props.user.userName);
+    }
 
   }
   removePick(game,array){
